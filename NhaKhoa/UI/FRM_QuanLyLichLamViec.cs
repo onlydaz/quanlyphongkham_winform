@@ -84,9 +84,17 @@ namespace NhaKhoa.UI
             {
                 using (var ctx = new DAL.NhaKhoaContext())
                 {
-                    var list = ctx.NhanViens.ToList();
+                    // Load only employees who are linked to a user that has a doctor role
+                    var doctors = ctx.NhanViens
+                        .Where(nv => nv.UserId != null && ctx.UserRoles
+                            .Any(ur => ur.UserId == nv.UserId && (
+                                ur.Role.Name.ToLower().Contains("bacsi") ||
+                                ur.Role.Name.ToLower().Contains("doctor")
+                            )))
+                        .ToList();
+
                     var items = (new[] { new { Ma = string.Empty, Ten = "-- Tất cả bác sĩ --" } })
-                        .Concat(list.Select(nv => new { Ma = nv.MaNV, Ten = nv.TenNV }))
+                        .Concat(doctors.Select(nv => new { Ma = nv.MaNV, Ten = nv.TenNV }))
                         .ToList();
 
                     cboBacSiFilter.DataSource = items;

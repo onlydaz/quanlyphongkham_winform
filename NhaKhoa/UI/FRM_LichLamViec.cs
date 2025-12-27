@@ -95,9 +95,25 @@ namespace NhaKhoa.UI
             try
             {
                 var all = _bus.LayTatCa();
+                // If the current user is a doctor, restrict the grid to that doctor's schedules
+                string currentMaBacSi = null;
+                bool isDoctor = false;
+                if (_loggedInUserId > 0)
+                {
+                    using (var ctx = new DAL.NhaKhoaContext())
+                    {
+                        var nv = ctx.NhanViens.FirstOrDefault(n => n.UserId == _loggedInUserId);
+                        if (nv != null)
+                        {
+                            currentMaBacSi = nv.MaNV;
+                            isDoctor = ctx.UserRoles.Any(ur => ur.UserId == _loggedInUserId && (
+                                ur.Role.Name.ToLower().Contains("bacsi") || ur.Role.Name.ToLower().Contains("doctor")
+                            ));
+                        }
+                    }
+                }
                 var dt = new DataTable();
-                dt.Columns.Add("Id", typeof(int));
-                dt.Columns.Add("BacSi", typeof(string));
+                // Only show relevant columns for doctors: Ngay, Tu, Den, GhiChu
                 dt.Columns.Add("Ngay", typeof(string));
                 dt.Columns.Add("Tu", typeof(string));
                 dt.Columns.Add("Den", typeof(string));
@@ -105,9 +121,12 @@ namespace NhaKhoa.UI
 
                 foreach (var l in all)
                 {
+                    if (isDoctor && !string.IsNullOrEmpty(currentMaBacSi) && l.MaBacSi != currentMaBacSi)
+                        continue;
+
                     var tu = l.GioBatDau.ToString();
                     var den = l.GioKetThuc.ToString();
-                    dt.Rows.Add(l.Id, l.BacSi?.TenNV ?? l.MaBacSi, DayName(l.NgayTrongTuan), tu, den, l.GhiChu);
+                    dt.Rows.Add(DayName(l.NgayTrongTuan), tu, den, l.GhiChu);
                 }
 
                 dgv.DataSource = dt;

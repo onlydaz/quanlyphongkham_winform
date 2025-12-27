@@ -26,6 +26,7 @@ namespace NhaKhoa.Letan
             {
                 LoadDoctors();
                 LoadTimeSlots();
+                LoadDanhSachBenhNhan();
             }
             catch { /* ignore UI load errors */ }
 
@@ -36,8 +37,15 @@ namespace NhaKhoa.Letan
 
         private void LoadDoctors()
         {
-            // Load all staff ordered by name; filtering by job code is removed (kept simple)
-            var doctors = _ctx.NhanViens.OrderBy(n => n.TenNV).ToList();
+            // Load only staff whose linked user has a doctor role
+            var doctors = _ctx.NhanViens
+                .Where(nv => nv.UserId != null && _ctx.UserRoles
+                    .Any(ur => ur.UserId == nv.UserId && (
+                        ur.Role.Name.ToLower().Contains("bacsi") ||
+                        ur.Role.Name.ToLower().Contains("doctor")
+                    )))
+                .OrderBy(n => n.TenNV)
+                .ToList();
 
             // If control not present (older UI), skip
             if (this.cboBacSi != null)
@@ -134,7 +142,7 @@ namespace NhaKhoa.Letan
                     return;
                 }
 
-                // Save LamSan using a short-lived context to avoid unrelated tracked-entity validation
+                // Save LamSan and ensure patient exists/updated in BENHNHAN
                 // Ensure MaLS fits DB nvarchar(10)
                 var maLS = Guid.NewGuid().ToString("N").Substring(0, 10);
                 maBN = string.IsNullOrWhiteSpace(maBN) ? null : maBN;
@@ -174,12 +182,67 @@ namespace NhaKhoa.Letan
                     var sqlLog = new StringBuilder();
                     using (var ctx = new NhaKhoaContext())
                     {
+                        // Ensure patient info is saved in BENHNHAN
+                        if (string.IsNullOrWhiteSpace(maBN))
+                        {
+                            MessageBox.Show("Vui lòng nhập Mã bệnh nhân.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+
+                        var bn = ctx.BenhNhans.SingleOrDefault(b => b.MaBN == maBN);
+
+                        // Gather patient fields from UI
+                        var ten = textBox3?.Text?.Trim();
+                        var sdt = textBox2?.Text?.Trim();
+                        var diachi = textBox4?.Text?.Trim();
+                        var namsinh = dateTimePicker1?.Value.Year ?? 0;
+                        var gioitinh = radioButton1 != null && radioButton1.Checked ? "Nam" : "Nu";
+                        var ngayKhamBn = date;
+                        var lyDo = richTextBox1?.Text;
+
+                        if (bn == null)
+                        {
+                            // Insert new patient
+                            bn = new Models.BenhNhan
+                            {
+                                MaBN = maBN,
+                                TenBN = ten,
+                                SDT = sdt,
+                                DiaChi = diachi,
+                                NamSinh = namsinh,
+                                GioiTinh = gioitinh,
+                                NgayKham = ngayKhamBn,
+                                LyDoKham = lyDo,
+                                TrangThai = "Chờ khám"
+                            };
+                            ctx.BenhNhans.Add(bn);
+                        }
+                        else
+                        {
+                            // Existing MaBN: ask confirmation to update patient info
+                            var res = MessageBox.Show($"Mã bệnh nhân '{maBN}' đã tồn tại. Cập nhật thông tin bệnh nhân hiện tại?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if (res == DialogResult.No)
+                            {
+                                return;
+                            }
+                            bn.TenBN = ten;
+                            bn.SDT = sdt;
+                            bn.DiaChi = diachi;
+                            bn.NamSinh = namsinh;
+                            bn.GioiTinh = gioitinh;
+                            bn.NgayKham = ngayKhamBn;
+                            bn.LyDoKham = lyDo;
+                        }
+
                         // Capture EF SQL for diagnosis
                         ctx.Database.Log = s => sqlLog.Append(s);
+                        // Add the appointment
                         ctx.LamSans.Add(lamsan);
                         ctx.SaveChanges();
                     }
-                    MessageBox.Show("Đặt lịch thành công.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Đặt lịch thành công.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        // Refresh patient list shown to receptionist
+                        try { LoadDanhSachBenhNhan(); } catch { }
                 }
                 catch (DbEntityValidationException dbex)
                 {
@@ -239,6 +302,69 @@ namespace NhaKhoa.Letan
             {
                 // Outer catch: show full exception stack for diagnosis
                 MessageBox.Show("Lỗi khi đặt lịch:\n" + ex.ToString(), "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void LoadDanhSachBenhNhan()
+        {
+            try
+            {
+                // Build a DataTable matching designer columns: MaBN, TenBN, GioiTinh, NamSinh, SDT, DiaChi, NgayTao, BacSi, GioKham, Column1 (GhiChu)
+                var dt = new System.Data.DataTable();
+                dt.Columns.Add("MaBN", typeof(string));
+                dt.Columns.Add("TenBN", typeof(string));
+                dt.Columns.Add("GioiTinh", typeof(string));
+                dt.Columns.Add("NamSinh", typeof(int));
+                dt.Columns.Add("SDT", typeof(string));
+                dt.Columns.Add("DiaChi", typeof(string));
+                dt.Columns.Add("NgayTao", typeof(string));
+                dt.Columns.Add("BacSi", typeof(string));
+                dt.Columns.Add("GioKham", typeof(string));
+                dt.Columns.Add("GhiChu", typeof(string));
+
+                using (var ctx = new NhaKhoaContext())
+                {
+                    // Only include MaBNs that have at least one LamSan (appointments)
+                    var grouped = ctx.LamSans
+                        .Where(l => !string.IsNullOrEmpty(l.MaBN))
+                        .GroupBy(l => l.MaBN)
+                        .Select(g => new { MaBN = g.Key, Latest = g.OrderByDescending(x => x.NgayKham).FirstOrDefault() })
+                        .ToList();
+
+                    foreach (var g in grouped)
+                    {
+                        var b = ctx.BenhNhans.FirstOrDefault(x => x.MaBN == g.MaBN);
+                        if (b == null) continue; // skip if patient record missing
+
+                        var latest = g.Latest;
+                        string bacSiName = string.Empty;
+                        string gioKham = string.Empty;
+                        string ngayKhamStr = latest?.NgayKham?.ToString("dd/MM/yyyy") ?? (b.NgayKham != default(DateTime) ? b.NgayKham.ToString("dd/MM/yyyy") : string.Empty);
+
+                        if (latest != null)
+                        {
+                            var nv = ctx.NhanViens.FirstOrDefault(n => n.MaNV == latest.MaNV);
+                            bacSiName = nv?.TenNV ?? latest.MaNV;
+                            var tu = latest.GioBatDau?.ToString() ?? string.Empty;
+                            var den = latest.GioKetThuc?.ToString() ?? string.Empty;
+                            gioKham = string.IsNullOrEmpty(tu) ? den : (tu + " - " + den);
+                        }
+
+                        dt.Rows.Add(b.MaBN, b.TenBN, b.GioiTinh, b.NamSinh, b.SDT, b.DiaChi, ngayKhamStr, bacSiName, gioKham, b.LyDoKham);
+                    }
+                }
+
+                dgvDSBN.AutoGenerateColumns = false;
+                // Ensure each designer column maps to a DataTable column
+                foreach (DataGridViewColumn col in dgvDSBN.Columns)
+                {
+                    if (string.IsNullOrWhiteSpace(col.DataPropertyName)) col.DataPropertyName = col.Name;
+                }
+                dgvDSBN.DataSource = dt;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi tải danh sách bệnh nhân: " + ex.Message);
             }
         }
     }
