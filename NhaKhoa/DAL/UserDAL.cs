@@ -37,7 +37,7 @@ namespace NhaKhoa.DAL
             }
         }
 
-        public (string PasswordHash, string RoleName)? GetPasswordHashAndRole(string username)
+        public (int UserId, string PasswordHash, string RoleName)? GetPasswordHashAndRole(string username)
         {
             using (var ctx = new NhaKhoaContext())
             {
@@ -49,7 +49,7 @@ namespace NhaKhoa.DAL
                     return null;
 
                 var role = user.UserRoles.First().Role;
-                return (user.PasswordHash, role.Name);
+                return (user.Id, user.PasswordHash, role.Name);
             }
         }
 

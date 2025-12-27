@@ -41,6 +41,8 @@
             this.btn_Taikhoan = new System.Windows.Forms.Button();
             this.btn_dschokham = new System.Windows.Forms.FlowLayoutPanel();
             this.btn_Dichvu = new System.Windows.Forms.Button();
+            this.btn_LichLamViec = new System.Windows.Forms.Button();
+            this.btn_QuanLyLich = new System.Windows.Forms.Button();
             this.btn_ds = new System.Windows.Forms.Button();
             this.btn_Dangxuat = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
@@ -211,6 +213,8 @@
             this.btn_dschokham.Controls.Add(this.btn_phieukhambenh);
             this.btn_dschokham.Controls.Add(this.btn_Dichvu);
             this.btn_dschokham.Controls.Add(this.btn_ds);
+            this.btn_dschokham.Controls.Add(this.btn_LichLamViec);
+            this.btn_dschokham.Controls.Add(this.btn_QuanLyLich);
             this.btn_dschokham.Controls.Add(this.btn_Hoadon);
             this.btn_dschokham.Controls.Add(this.btn_Doanhthu);
             this.btn_dschokham.Controls.Add(this.btn_Dangxuat);
@@ -234,6 +238,36 @@
             this.btn_Dichvu.Text = "Dịch vụ";
             this.btn_Dichvu.UseVisualStyleBackColor = true;
             this.btn_Dichvu.Click += new System.EventHandler(this.btn_Dichvu_Click);
+            // 
+            // btn_LichLamViec
+            // 
+            this.btn_LichLamViec.FlatAppearance.BorderSize = 0;
+            this.btn_LichLamViec.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_LichLamViec.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_LichLamViec.ForeColor = System.Drawing.Color.Transparent;
+            this.btn_LichLamViec.Location = new System.Drawing.Point(2, 433);
+            this.btn_LichLamViec.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_LichLamViec.Name = "btn_LichLamViec";
+            this.btn_LichLamViec.Size = new System.Drawing.Size(178, 49);
+            this.btn_LichLamViec.TabIndex = 11;
+            this.btn_LichLamViec.Text = "Lịch làm việc";
+            this.btn_LichLamViec.UseVisualStyleBackColor = true;
+            this.btn_LichLamViec.Click += new System.EventHandler(this.btn_LichLamViec_Click);
+            // 
+            // btn_QuanLyLich
+            // 
+            this.btn_QuanLyLich.FlatAppearance.BorderSize = 0;
+            this.btn_QuanLyLich.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_QuanLyLich.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_QuanLyLich.ForeColor = System.Drawing.Color.Transparent;
+            this.btn_QuanLyLich.Location = new System.Drawing.Point(2, 486);
+            this.btn_QuanLyLich.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_QuanLyLich.Name = "btn_QuanLyLich";
+            this.btn_QuanLyLich.Size = new System.Drawing.Size(178, 49);
+            this.btn_QuanLyLich.TabIndex = 12;
+            this.btn_QuanLyLich.Text = "Quản lý lịch";
+            this.btn_QuanLyLich.UseVisualStyleBackColor = true;
+            this.btn_QuanLyLich.Click += new System.EventHandler(this.btn_QuanLyLich_Click);
             // 
             // btn_ds
             // 
@@ -297,5 +331,7 @@
         private System.Windows.Forms.Button btn_ds;
         private System.Windows.Forms.Button btn_Dangxuat;
         private System.Windows.Forms.Button btn_Dichvu;
+        private System.Windows.Forms.Button btn_LichLamViec;
+        private System.Windows.Forms.Button btn_QuanLyLich;
     }
 }

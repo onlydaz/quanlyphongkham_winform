@@ -28,7 +28,7 @@ namespace NhaKhoa
                 var login = new Login();
                 if (login.ShowDialog() == DialogResult.OK)
                 {
-                    var main = new frmMain(login.LoggedInRole);
+                    var main = new frmMain(login.LoggedInRole, login.LoggedInUserId);
                     main.FormClosed += (s, args) =>
                     {
                         if (main.DialogResult == DialogResult.Abort)

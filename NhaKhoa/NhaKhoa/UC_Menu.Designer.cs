@@ -33,6 +33,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btn_Doanhthu = new System.Windows.Forms.Button();
+            this.btn_LichLamViec = new System.Windows.Forms.Button();
+            this.btn_QuanLyLich = new System.Windows.Forms.Button();
             this.btn_Dangxuat = new System.Windows.Forms.Button();
             this.btn_Hoadon = new System.Windows.Forms.Button();
             this.btn_Thuoc = new System.Windows.Forms.Button();
@@ -49,6 +51,8 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(46)))), ((int)(((byte)(74)))));
             this.panel1.Controls.Add(this.panel2);
+            this.panel1.Controls.Add(this.btn_LichLamViec);
+            this.panel1.Controls.Add(this.btn_QuanLyLich);
             this.panel1.Controls.Add(this.btn_Doanhthu);
             this.panel1.Controls.Add(this.btn_Dangxuat);
             this.panel1.Controls.Add(this.btn_Hoadon);
@@ -112,6 +116,34 @@
             this.btn_Doanhthu.Text = "Doanh thu";
             this.btn_Doanhthu.UseVisualStyleBackColor = true;
             this.btn_Doanhthu.Click += new System.EventHandler(this.btn_Doanhthu_Click);
+            // 
+            // btn_LichLamViec
+            // 
+            this.btn_LichLamViec.FlatAppearance.BorderSize = 0;
+            this.btn_LichLamViec.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_LichLamViec.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.btn_LichLamViec.ForeColor = System.Drawing.Color.Transparent;
+            this.btn_LichLamViec.Location = new System.Drawing.Point(0, 493);
+            this.btn_LichLamViec.Name = "btn_LichLamViec";
+            this.btn_LichLamViec.Size = new System.Drawing.Size(237, 60);
+            this.btn_LichLamViec.TabIndex = 8;
+            this.btn_LichLamViec.Text = "Lịch làm việc";
+            this.btn_LichLamViec.UseVisualStyleBackColor = true;
+            this.btn_LichLamViec.Click += new System.EventHandler(this.btn_LichLamViec_Click);
+            // 
+            // btn_QuanLyLich
+            // 
+            this.btn_QuanLyLich.FlatAppearance.BorderSize = 0;
+            this.btn_QuanLyLich.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_QuanLyLich.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.btn_QuanLyLich.ForeColor = System.Drawing.Color.Transparent;
+            this.btn_QuanLyLich.Location = new System.Drawing.Point(0, 553);
+            this.btn_QuanLyLich.Name = "btn_QuanLyLich";
+            this.btn_QuanLyLich.Size = new System.Drawing.Size(237, 60);
+            this.btn_QuanLyLich.TabIndex = 9;
+            this.btn_QuanLyLich.Text = "Quản lý lịch";
+            this.btn_QuanLyLich.UseVisualStyleBackColor = true;
+            this.btn_QuanLyLich.Click += new System.EventHandler(this.btn_QuanLyLich_Click);
             // 
             // btn_Dangxuat
             // 

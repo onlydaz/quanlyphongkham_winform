@@ -14,6 +14,7 @@ namespace NhaKhoa
     public partial class Login : Form
     {
         public string LoggedInRole { get; private set; }
+        public int LoggedInUserId { get; private set; }
         private readonly AuthBUS _authBus;
 
         public Login()
@@ -29,11 +30,12 @@ namespace NhaKhoa
                 string username = txtUserName.Text.Trim();
                 string password = txtPassWord.Text;
 
-                string role = _authBus.Login(username, password);
+                var auth = _authBus.Login(username, password);
 
-                if (role != null)
+                if (auth.Role != null)
                 {
-                    LoggedInRole = role;
+                    LoggedInRole = auth.Role;
+                    LoggedInUserId = auth.UserId ?? 0;
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }

@@ -220,10 +220,12 @@
     <Compile Include="BUS\NhanVienBUS.cs" />
     <Compile Include="BUS\RoleBUS.cs" />
     <Compile Include="BUS\ThuocBUS.cs" />
+    <Compile Include="BUS\LichBacSiBUS.cs" />
     <Compile Include="BUS\UserBUS.cs" />
     <Compile Include="BUS\UserRoleBUS.cs" />
     <Compile Include="BUS\VatLieuBUS.cs" />
     <Compile Include="DAL\BenhNhanDAL.cs" />
+    <Compile Include="DAL\LichBacSiDAL.cs" />
     <Compile Include="DAL\ChanDoanDAL.cs" />
     <Compile Include="DAL\ChuanDoanDAL.cs" />
     <Compile Include="DAL\DieuTriDAL.cs" />
@@ -239,6 +241,7 @@
     <Compile Include="Models\DieuTri.cs" />
     <Compile Include="Models\LamSan.cs" />
     <Compile Include="Models\TaiKhoan.cs" />
+    <Compile Include="Models\LichBacSi.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="UI\FormInDanhMuc.cs">
       <SubType>Form</SubType>
@@ -353,6 +356,24 @@
     <Compile Include="UI\FRM_Vatlieu.Designer.cs">
       <DependentUpon>FRM_Vatlieu.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\FRM_LichLamViec.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FRM_LichLamViec.Designer.cs">
+      <DependentUpon>FRM_LichLamViec.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="UI\FRM_LichLamViec.resx">
+      <DependentUpon>FRM_LichLamViec.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="UI\FRM_QuanLyLichLamViec.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FRM_QuanLyLichLamViec.Designer.cs">
+      <DependentUpon>FRM_QuanLyLichLamViec.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="UI\FRM_QuanLyLichLamViec.resx">
+      <DependentUpon>FRM_QuanLyLichLamViec.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ReportInDanhMuc.rdlc" />
     <EmbeddedResource Include="UI\FormInDanhMuc.resx">
       <DependentUpon>FormInDanhMuc.cs</DependentUpon>

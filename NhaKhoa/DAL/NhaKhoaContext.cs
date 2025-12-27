@@ -17,6 +17,7 @@ namespace NhaKhoa.DAL
         public DbSet<Models.HoaDon> HoaDons { get; set; }
         public DbSet<Models.VatLieu> VatLieus { get; set; }
         public DbSet<Models.Users> Users { get; set; }
+        public DbSet<Models.LichBacSi> LichBacSis { get; set; }
         public DbSet<Models.Roles> Roles { get; set; }
         public DbSet<Models.UserRoles> UserRoles { get; set; }
         public DbSet<Models.ChanDoan> ChanDoans { get; set; }

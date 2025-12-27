@@ -26,8 +26,31 @@ namespace NhaKhoa
             btn_Thuoc.Visible = false;
             btn_Hoadon.Visible = false;
             btn_Doanhthu.Visible = false;
+            btn_LichLamViec.Visible = false;
+            btn_QuanLyLich.Visible = false;
 
-            if (role.ToLower() == "admin")
+            if (string.IsNullOrWhiteSpace(role))
+                return;
+
+            // Normalize: lowercase and remove diacritics so comparisons are robust
+            string Normalize(string s)
+            {
+                if (string.IsNullOrWhiteSpace(s)) return string.Empty;
+                var normalized = s.Normalize(System.Text.NormalizationForm.FormD);
+                var sb = new System.Text.StringBuilder();
+                foreach (var ch in normalized)
+                {
+                    var uc = System.Globalization.CharUnicodeInfo.GetUnicodeCategory(ch);
+                    if (uc != System.Globalization.UnicodeCategory.NonSpacingMark)
+                        sb.Append(ch);
+                }
+                return sb.ToString().Normalize(System.Text.NormalizationForm.FormC).ToLowerInvariant();
+            }
+
+            var r = Normalize(role);
+
+            // Admin variants
+            if (r.Contains("admin") || r.Contains("quantri") || r.Contains("quảntri") || r.Contains("quản trị"))
             {
                 btn_Benhnhan.Visible = true;
                 btn_Nhanvien.Visible = true;
@@ -35,11 +58,26 @@ namespace NhaKhoa
                 btn_Thuoc.Visible = true;
                 btn_Hoadon.Visible = true;
                 btn_Doanhthu.Visible = true;
+                // Admin should open the management schedule screen
+                btn_QuanLyLich.Visible = true;
+                btn_LichLamViec.Visible = false;
+                return;
             }
-            else if (role.ToLower() == "lễ tân")
+
+            // Receptionist variants
+            if (r.Contains("letan") || r.Contains("le tan") || r.Contains("receptionist") || r.Contains("reception"))
             {
                 btn_Benhnhan.Visible = true;
                 btn_Hoadon.Visible = true;
+                btn_LichLamViec.Visible = true;
+                return;
+            }
+
+            // Doctor variants
+            if (r.Contains("bacsi") || r.Contains("bac si") || r.Contains("bacs") || r.Contains("doctor"))
+            {
+                btn_LichLamViec.Visible = true;
+                return;
             }
         }
 
@@ -76,6 +114,16 @@ namespace NhaKhoa
         private void btn_Doanhthu_Click(object sender, EventArgs e)
         {
             MenuItemClicked?.Invoke(this, new MenuItemEventArgs { MenuItem = "Doanhthu" });
+        }
+
+        private void btn_LichLamViec_Click(object sender, EventArgs e)
+        {
+            MenuItemClicked?.Invoke(this, new MenuItemEventArgs { MenuItem = "LichLamViec" });
+        }
+
+        private void btn_QuanLyLich_Click(object sender, EventArgs e)
+        {
+            MenuItemClicked?.Invoke(this, new MenuItemEventArgs { MenuItem = "QuanLyLichLamViec" });
         }
     }
 
