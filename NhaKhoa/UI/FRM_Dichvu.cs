@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NhaKhoa.BUS;
-using NhaKhoa.Models;
+using NhaKhoa.DAL.Models;
 
 namespace NhaKhoa.UI
 {

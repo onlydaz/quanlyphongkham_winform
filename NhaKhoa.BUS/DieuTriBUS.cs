@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NhaKhoa.DAL;
-using NhaKhoa.Models;
+using NhaKhoa.DAL.Models;
 
 namespace NhaKhoa.BUS
 {

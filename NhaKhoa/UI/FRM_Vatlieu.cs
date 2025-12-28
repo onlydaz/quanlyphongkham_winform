@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NhaKhoa.BUS;
-using NhaKhoa.Models;
 
 namespace NhaKhoa.Vatlieu
 {
@@ -72,7 +71,7 @@ namespace NhaKhoa.Vatlieu
         {
             try
             {
-                var vatLieu = new Models.VatLieu
+                var vatLieu = new DAL.Models.VatLieu
                 {
                     MaDC = txtmaDC.Text, // Có thể để trống để BUS tự sinh
                     TenDC = txttenDC.Text,
@@ -94,7 +93,7 @@ namespace NhaKhoa.Vatlieu
         {
             try
             {
-                var vatLieu = new Models.VatLieu
+                var vatLieu = new DAL.Models.VatLieu
                 {
                     MaDC = txtmaDC.Text,
                     TenDC = txttenDC.Text,

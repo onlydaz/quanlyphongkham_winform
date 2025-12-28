@@ -13,6 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -196,6 +197,9 @@
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="System.Resources.Extensions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Resources.Extensions.8.0.0\lib\net462\System.Resources.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
@@ -232,6 +236,12 @@
     <Compile Include="UI\FormInDanhMuc.Designer.cs">
       <DependentUpon>FormInDanhMuc.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\FormInHoaDonLamSan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FormInHoaDonLamSan.Designer.cs">
+      <DependentUpon>FormInHoaDonLamSan.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\FRM_Benhnhan.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -244,6 +254,12 @@
     </Compile>
     <Compile Include="UI\FRM_Dichvu.Designer.cs">
       <DependentUpon>FRM_Dichvu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FRM_DoanhThu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FRM_DoanhThu.Designer.cs">
+      <DependentUpon>FRM_DoanhThu.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\FRM_Main.cs">
       <SubType>Form</SubType>
@@ -262,12 +278,6 @@
     </Compile>
     <Compile Include="UI\FRM_Lamsan.Designer.cs">
       <DependentUpon>FRM_Lamsan.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FRM_ThanhToan.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FRM_ThanhToan.Designer.cs">
-      <DependentUpon>FRM_ThanhToan.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\FRM_AddHoadon.cs">
       <SubType>Form</SubType>
@@ -332,14 +342,21 @@
       <DependentUpon>FRM_Vatlieu.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="ReportInDanhMuc.rdlc" />
+    <EmbeddedResource Include="ReportHoaDonLamSan.rdlc" />
     <EmbeddedResource Include="UI\FormInDanhMuc.resx">
       <DependentUpon>FormInDanhMuc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FormInHoaDonLamSan.resx">
+      <DependentUpon>FormInHoaDonLamSan.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FRM_Benhnhan.resx">
       <DependentUpon>FRM_Benhnhan.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FRM_Dichvu.resx">
       <DependentUpon>FRM_Dichvu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FRM_DoanhThu.resx">
+      <DependentUpon>FRM_DoanhThu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FRM_Main.resx">
       <DependentUpon>FRM_Main.cs</DependentUpon>
@@ -349,9 +366,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FRM_Lamsan.resx">
       <DependentUpon>FRM_Lamsan.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FRM_ThanhToan.resx">
-      <DependentUpon>FRM_ThanhToan.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FRM_AddHoadon.resx">
       <DependentUpon>FRM_AddHoadon.cs</DependentUpon>

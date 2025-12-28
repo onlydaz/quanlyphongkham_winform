@@ -8,10 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NhaKhoa.BUS;
-using NhaKhoa.Models;
 using NhaKhoa.DAL;
+using NhaKhoa.DAL.Models;
+using NhaKhoa.UI;
 
-namespace NhaKhoa
+namespace NhaKhoa.GUI
 {
     public partial class FRM_Lamsan : Form
     {
@@ -281,34 +282,13 @@ namespace NhaKhoa
         {
             try
             {
-                string toaThuoc = $"TOA THUỐC\n\n" +
-                          $"Bệnh nhân: {lblTenBN.Text} ({lblMaBN.Text})\n" +
-                          $"Ngày sinh: {lblNgaySinh.Text}\n" +
-                          $"Giới tính: {lblGioiTinh.Text}\n\n" +
-                          $"Chi tiết:\n";
-
-                foreach (DataGridViewRow row in dgvLamSan.Rows)
-                {
-                    if (row.Cells["Chẩn đoán"].Value != null)
-                    {
-                        toaThuoc += $"Chẩn đoán: {row.Cells["Chẩn đoán"].Value}\n";
-                    }
-                    if (row.Cells["Điều trị"].Value != null)
-                    {
-                        toaThuoc += $"Điều trị: {row.Cells["Điều trị"].Value}\n";
-                    }
-                    if (row.Cells["Đơn giá"].Value != null)
-                    {
-                        toaThuoc += $"Đơn giá: {row.Cells["Đơn giá"].Value}\n";
-                    }
-                    toaThuoc += "---\n";
-                }
-
-                MessageBox.Show(toaThuoc, "Toa thuốc", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Mở form in hóa đơn với ReportViewer
+                FormInHoaDonLamSan formInHoaDon = new FormInHoaDonLamSan(_maBN);
+                formInHoaDon.ShowDialog();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi in toa thuốc: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Lỗi khi in hóa đơn: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

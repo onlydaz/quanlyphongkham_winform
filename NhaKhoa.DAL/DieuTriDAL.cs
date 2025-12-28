@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using NhaKhoa.Models;
+using NhaKhoa.DAL.Models;
 
 namespace NhaKhoa.DAL
 {
@@ -137,7 +137,7 @@ namespace NhaKhoa.DAL
                     var innerEx = ex.InnerException?.InnerException;
                     throw new Exception($"Lỗi khi cập nhật điều trị: {innerEx?.Message ?? ex.Message}", ex);
                 }
-                catch (System.InvalidOperationException ex)
+                catch (System.InvalidOperationException)
                 {
                     try
                     {

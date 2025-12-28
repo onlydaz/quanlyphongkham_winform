@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NhaKhoa.DAL;
-using NhaKhoa.Models;
+using NhaKhoa.DAL.Models;
 
 namespace NhaKhoa.BUS
 {
@@ -30,11 +30,11 @@ namespace NhaKhoa.BUS
         public void ThemThuoc(Thuoc t)
         {
             if (string.IsNullOrWhiteSpace(t.TenThuoc))
-                throw new ArgumentException("Tên thu?c không du?c d? tr?ng");
+                throw new ArgumentException("Tï¿½n thu?c khï¿½ng du?c d? tr?ng");
             if (t.DonGia < 0)
-                throw new ArgumentException("Ðon giá không h?p l?");
+                throw new ArgumentException("ï¿½on giï¿½ khï¿½ng h?p l?");
             if (t.SoLuongTon < 0)
-                throw new ArgumentException("S? lu?ng t?n không h?p l?");
+                throw new ArgumentException("S? lu?ng t?n khï¿½ng h?p l?");
 
             if (string.IsNullOrEmpty(t.MaThuoc))
                 t.MaThuoc = _dal.GetNewMaThuoc();
@@ -45,13 +45,13 @@ namespace NhaKhoa.BUS
         public void CapNhatThuoc(Thuoc t)
         {
             if (string.IsNullOrWhiteSpace(t.MaThuoc))
-                throw new ArgumentException("Mã thu?c không du?c d? tr?ng");
+                throw new ArgumentException("Mï¿½ thu?c khï¿½ng du?c d? tr?ng");
             if (string.IsNullOrWhiteSpace(t.TenThuoc))
-                throw new ArgumentException("Tên thu?c không du?c d? tr?ng");
+                throw new ArgumentException("Tï¿½n thu?c khï¿½ng du?c d? tr?ng");
             if (t.DonGia < 0)
-                throw new ArgumentException("Ðon giá không h?p l?");
+                throw new ArgumentException("ï¿½on giï¿½ khï¿½ng h?p l?");
             if (t.SoLuongTon < 0)
-                throw new ArgumentException("S? lu?ng t?n không h?p l?");
+                throw new ArgumentException("S? lu?ng t?n khï¿½ng h?p l?");
 
             _dal.Update(t);
         }
@@ -59,7 +59,7 @@ namespace NhaKhoa.BUS
         public void XoaThuoc(string maThuoc)
         {
             if (string.IsNullOrWhiteSpace(maThuoc))
-                throw new ArgumentException("Mã thu?c không h?p l?");
+                throw new ArgumentException("Mï¿½ thu?c khï¿½ng h?p l?");
 
             _dal.Delete(maThuoc);
         }

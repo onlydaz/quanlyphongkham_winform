@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NhaKhoa.BUS;
-using NhaKhoa.Models;
 
 namespace NhaKhoa.BenhNhan
 {
@@ -62,7 +61,7 @@ namespace NhaKhoa.BenhNhan
             }
         }
 
-        private DataTable ConvertToDataTable(List<Models.BenhNhan> list)
+        private DataTable ConvertToDataTable(List<DAL.Models.BenhNhan> list)
         {
             var dt = new DataTable();
             dt.Columns.Add("MaBN", typeof(string));
@@ -257,7 +256,7 @@ namespace NhaKhoa.BenhNhan
                 DateTime ngayKham = dtpNgayKham.Value;
                 string lyDoKham = txtLyDoKham.Text.Trim();
 
-                var benhNhan = new Models.BenhNhan
+                var benhNhan = new DAL.Models.BenhNhan
                 {
                     MaBN = string.IsNullOrWhiteSpace(maBN) ? null : maBN, // BUS sẽ tự sinh nếu để trống
                     TenBN = tenBN,
@@ -302,7 +301,7 @@ namespace NhaKhoa.BenhNhan
                 // Lấy thông tin bệnh nhân hiện tại để giữ TrangThai
                 var benhNhanHienTai = _benhNhanBus.LayBenhNhanTheoMa(currentMaBN);
                 
-                var benhNhan = new Models.BenhNhan
+                var benhNhan = new DAL.Models.BenhNhan
                 {
                     MaBN = currentMaBN,
                     TenBN = tenBN,

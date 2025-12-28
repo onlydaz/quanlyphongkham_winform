@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using OfficeOpenXml;
 using NhaKhoa.DAL;
 
-namespace NhaKhoa
+namespace NhaKhoa.GUI
 {
     internal static class Program
     {

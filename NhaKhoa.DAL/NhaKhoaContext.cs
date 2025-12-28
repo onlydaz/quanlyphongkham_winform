@@ -1,6 +1,6 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration;
-using NhaKhoa.Models;
+using NhaKhoa.DAL.Models;
 
 namespace NhaKhoa.DAL
 {

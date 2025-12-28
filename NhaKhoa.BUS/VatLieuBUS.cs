@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NhaKhoa.DAL;
-using NhaKhoa.Models;
+using NhaKhoa.DAL.Models;
 
 namespace NhaKhoa.BUS
 {
@@ -30,7 +30,7 @@ namespace NhaKhoa.BUS
         public VatLieu LayVatLieuTheoMa(string maDC)
         {
             if (string.IsNullOrWhiteSpace(maDC))
-                throw new ArgumentException("Mã d?ng c? không du?c d? tr?ng");
+                throw new ArgumentException("Mï¿½ d?ng c? khï¿½ng du?c d? tr?ng");
 
             return _dal.GetById(maDC);
         }
@@ -38,13 +38,13 @@ namespace NhaKhoa.BUS
         public void ThemVatLieu(VatLieu vl)
         {
             if (string.IsNullOrWhiteSpace(vl.TenDC))
-                throw new ArgumentException("Tên d?ng c? không du?c d? tr?ng");
+                throw new ArgumentException("Tï¿½n d?ng c? khï¿½ng du?c d? tr?ng");
 
             if (vl.SoLuong < 0)
-                throw new ArgumentException("S? lu?ng không h?p l?");
+                throw new ArgumentException("S? lu?ng khï¿½ng h?p l?");
 
             if (vl.DonGia < 0)
-                throw new ArgumentException("Ðon giá không h?p l?");
+                throw new ArgumentException("ï¿½on giï¿½ khï¿½ng h?p l?");
 
             if (string.IsNullOrWhiteSpace(vl.MaDC))
                 vl.MaDC = _dal.GetNewMaDC();
@@ -55,16 +55,16 @@ namespace NhaKhoa.BUS
         public void CapNhatVatLieu(VatLieu vl)
         {
             if (string.IsNullOrWhiteSpace(vl.MaDC))
-                throw new ArgumentException("Mã d?ng c? không du?c d? tr?ng");
+                throw new ArgumentException("Mï¿½ d?ng c? khï¿½ng du?c d? tr?ng");
 
             if (string.IsNullOrWhiteSpace(vl.TenDC))
-                throw new ArgumentException("Tên d?ng c? không du?c d? tr?ng");
+                throw new ArgumentException("Tï¿½n d?ng c? khï¿½ng du?c d? tr?ng");
 
             if (vl.SoLuong < 0)
-                throw new ArgumentException("S? lu?ng không h?p l?");
+                throw new ArgumentException("S? lu?ng khï¿½ng h?p l?");
 
             if (vl.DonGia < 0)
-                throw new ArgumentException("Ðon giá không h?p l?");
+                throw new ArgumentException("ï¿½on giï¿½ khï¿½ng h?p l?");
 
             _dal.Update(vl);
         }
@@ -72,7 +72,7 @@ namespace NhaKhoa.BUS
         public void XoaVatLieu(string maDC)
         {
             if (string.IsNullOrWhiteSpace(maDC))
-                throw new ArgumentException("Mã d?ng c? không h?p l?");
+                throw new ArgumentException("Mï¿½ d?ng c? khï¿½ng h?p l?");
 
             _dal.Delete(maDC);
         }

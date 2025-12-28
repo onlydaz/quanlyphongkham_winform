@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NhaKhoa.BUS;
-using NhaKhoa.Models;
 
 namespace NhaKhoa.NhanVien
 {
@@ -170,7 +169,7 @@ namespace NhaKhoa.NhanVien
             rbtnNu.Checked = false;
             currentMaNV = "";
         }
-        private DataTable ConvertToDataTable(List<Models.NhanVien> list)
+        private DataTable ConvertToDataTable(List<DAL.Models.NhanVien> list)
         {
             var dt = new DataTable();
             dt.Columns.Add("MaNV", typeof(string));
@@ -295,7 +294,7 @@ namespace NhaKhoa.NhanVien
                 string diaChi = txtDiaChi.Text.Trim();
                 string gioiTinh = rbtnNam.Checked ? "Nam" : "Nữ";
 
-                var nhanVien = new Models.NhanVien
+                var nhanVien = new DAL.Models.NhanVien
                 {
                     MaNV = currentMaNV,
                     TenNV = tenNV,
@@ -336,7 +335,7 @@ namespace NhaKhoa.NhanVien
                 string diaChi = txtDiaChi.Text.Trim();
                 string gioiTinh = rbtnNam.Checked ? "Nam" : "Nữ";
 
-                var nhanVien = new Models.NhanVien
+                var nhanVien = new DAL.Models.NhanVien
                 {
                     MaNV = string.IsNullOrWhiteSpace(maNV) ? null : maNV, // BUS sẽ tự sinh nếu để trống
                     TenNV = tenNV,

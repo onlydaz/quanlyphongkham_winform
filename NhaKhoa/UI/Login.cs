@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using NhaKhoa.BUS;
 
-namespace NhaKhoa
+namespace NhaKhoa.GUI
 {
     public partial class Login : Form
     {

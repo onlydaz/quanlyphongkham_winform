@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace NhaKhoa
+namespace NhaKhoa.GUI
 {
     public partial class UC_Menu : UserControl
     {

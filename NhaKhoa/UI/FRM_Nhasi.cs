@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using NhaKhoa.BUS;
-using NhaKhoa.Models;
 using OfficeOpenXml;
+using NhaKhoa.GUI;
 
 namespace NhaKhoa.NhaSi
 {

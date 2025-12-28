@@ -17,7 +17,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace NhaKhoa
+namespace NhaKhoa.GUI
 {
     public partial class frmMain : Form
     {
@@ -133,6 +133,9 @@ namespace NhaKhoa
 
                 case "DanhSachChoKham":
                     formToOpen = new FRM_Nhasi();
+                    break;
+                case "Doanhthu":
+                    formToOpen = new FRM_DoanhThu(); 
                     break;
             }
 

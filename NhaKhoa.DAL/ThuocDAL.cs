@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using NhaKhoa.Models;
+using NhaKhoa.DAL.Models;
 
 namespace NhaKhoa.DAL
 {
     public class ThuocDAL
     {
-        // Dùng fully qualified name Thuoc d? tránh xung d?t v?i namespace NhaKhoa.Thuoc
+        // Dï¿½ng fully qualified name Thuoc d? trï¿½nh xung d?t v?i namespace NhaKhoa.Thuoc
         public List<Thuoc> GetAll()
         {
             using (var ctx = new NhaKhoaContext())
@@ -37,7 +37,7 @@ namespace NhaKhoa.DAL
 
                 if (!last.Any()) return "TH001";
 
-                // Gi? l?i logic cu: tách s? phía sau
+                // Gi? l?i logic cu: tï¿½ch s? phï¿½a sau
                 int max = last
                     .Select(t =>
                     {

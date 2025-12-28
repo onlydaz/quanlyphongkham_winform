@@ -10,14 +10,12 @@ using BCrypt.Net;
 using System.Windows.Forms;
 using System.IO;
 using NhaKhoa.BUS;
-using NhaKhoa.Models;
 
 namespace NhaKhoa.TaiKhoan
 {
     public partial class FRM_Account : Form
     {
         private int currentUserId = 0;
-        private bool isEditing = false;
         private readonly UserBUS _userBus;
         private readonly RoleBUS _roleBus;
         private readonly UserRoleBUS _userRoleBus;
@@ -108,7 +106,6 @@ namespace NhaKhoa.TaiKhoan
             txtFullname.Text = "";
             txtEmail.Text = "";
             currentUserId = 0;
-            isEditing = false;
 
             if (cbRole.Items.Count > 0)
                 cbRole.SelectedIndex = 0; // Chọn item mặc định
@@ -248,7 +245,7 @@ namespace NhaKhoa.TaiKhoan
 
                 string passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
 
-                var user = new Models.Users
+                var user = new DAL.Models.Users
                 {
                     Username = username,
                     PasswordHash = passwordHash,

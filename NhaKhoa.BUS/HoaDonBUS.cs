@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NhaKhoa.DAL;
-using NhaKhoa.Models;
+using NhaKhoa.DAL.Models;
 
 namespace NhaKhoa.BUS
 {
@@ -22,7 +22,7 @@ namespace NhaKhoa.BUS
         public HoaDon LayHoaDonTheoMa(string maHD)
         {
             if (string.IsNullOrWhiteSpace(maHD))
-                throw new ArgumentException("Mã hóa don không du?c d? tr?ng");
+                throw new ArgumentException("Mï¿½ hï¿½a don khï¿½ng du?c d? tr?ng");
 
             return _dal.GetById(maHD);
         }
@@ -35,13 +35,13 @@ namespace NhaKhoa.BUS
         public void ThemHoaDon(HoaDon hd)
         {
             if (string.IsNullOrWhiteSpace(hd.MaBN))
-                throw new ArgumentException("Mã b?nh nhân không du?c d? tr?ng");
+                throw new ArgumentException("Mï¿½ b?nh nhï¿½n khï¿½ng du?c d? tr?ng");
 
             if (string.IsNullOrWhiteSpace(hd.MaNV))
-                throw new ArgumentException("Mã nhân viên không du?c d? tr?ng");
+                throw new ArgumentException("Mï¿½ nhï¿½n viï¿½n khï¿½ng du?c d? tr?ng");
 
             if (hd.TongTien < 0)
-                throw new ArgumentException("T?ng ti?n không h?p l?");
+                throw new ArgumentException("T?ng ti?n khï¿½ng h?p l?");
 
             if (string.IsNullOrWhiteSpace(hd.MaHD))
                 hd.MaHD = _dal.GetNewMaHD();
@@ -55,14 +55,14 @@ namespace NhaKhoa.BUS
         public void CapNhatHoaDon(HoaDon hd)
         {
             if (string.IsNullOrWhiteSpace(hd.MaHD))
-                throw new ArgumentException("Mã hóa don không du?c d? tr?ng");
+                throw new ArgumentException("Mï¿½ hï¿½a don khï¿½ng du?c d? tr?ng");
 
             if (hd.TongTien < 0)
-                throw new ArgumentException("T?ng ti?n không h?p l?");
+                throw new ArgumentException("T?ng ti?n khï¿½ng h?p l?");
 
             var existing = _dal.GetById(hd.MaHD);
             if (existing == null)
-                throw new ArgumentException($"Không tìm th?y hóa don v?i mã {hd.MaHD}");
+                throw new ArgumentException($"Khï¿½ng tï¿½m th?y hï¿½a don v?i mï¿½ {hd.MaHD}");
 
             _dal.Update(hd);
         }
@@ -70,7 +70,7 @@ namespace NhaKhoa.BUS
         public void XoaHoaDon(string maHD)
         {
             if (string.IsNullOrWhiteSpace(maHD))
-                throw new ArgumentException("Mã hóa don không h?p l?");
+                throw new ArgumentException("Mï¿½ hï¿½a don khï¿½ng h?p l?");
 
             _dal.Delete(maHD);
         }

@@ -1,4 +1,4 @@
-﻿namespace NhaKhoa
+﻿namespace NhaKhoa.GUI
 {
     partial class UC_Menu
     {

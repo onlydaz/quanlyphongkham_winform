@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using NhaKhoa.Models;
+using NhaKhoa.DAL.Models;
 
 namespace NhaKhoa.DAL
 {
@@ -56,7 +56,7 @@ namespace NhaKhoa.DAL
 
                 if (denNgay.HasValue)
                 {
-                    // Tính toán denNgayEnd tru?c khi query (không dùng AddSeconds trong LINQ)
+                    // Tï¿½nh toï¿½n denNgayEnd tru?c khi query (khï¿½ng dï¿½ng AddSeconds trong LINQ)
                     var denNgayEnd = denNgay.Value.Date.AddDays(1).AddTicks(-1);
                     query = query.Where(x => x.NgayLapHD <= denNgayEnd);
                 }

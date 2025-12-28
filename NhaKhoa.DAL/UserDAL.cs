@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using NhaKhoa.Models;
+using NhaKhoa.DAL.Models;
 
 namespace NhaKhoa.DAL
 {
@@ -58,7 +58,7 @@ namespace NhaKhoa.DAL
         {
             using (var ctx = new NhaKhoaContext())
             {
-                // Load v? memory tru?c d? có th? dùng string.Join
+                // Load v? memory tru?c d? cï¿½ th? dï¿½ng string.Join
                 var users = ctx.Users
                               .Include(x => x.UserRoles.Select(ur => ur.Role))
                               .Where(x => x.IsActive)
@@ -80,7 +80,7 @@ namespace NhaKhoa.DAL
                         FullName = u.FullName,
                         Email = u.Email,
                         IsActive = u.IsActive,
-                        Status = u.IsActive ? "Ho?t d?ng" : "Không ho?t d?ng",
+                        Status = u.IsActive ? "Ho?t d?ng" : "Khï¿½ng ho?t d?ng",
                         Roles = string.Join(", ", roles)
                     });
                 }

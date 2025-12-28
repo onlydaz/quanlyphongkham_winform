@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NhaKhoa.BUS;
-using NhaKhoa.Models;
 using NhaKhoa.UI;
 
 namespace NhaKhoa.Thuoc
@@ -29,7 +28,7 @@ namespace NhaKhoa.Thuoc
             SetupThuocGrid();
         }
 
-        private DataTable ConvertToDataTable(List<Models.Thuoc> list)
+        private DataTable ConvertToDataTable(List<DAL.Models.Thuoc> list)
         {
             var dt = new DataTable();
             dt.Columns.Add("MaThuoc", typeof(string));
@@ -152,7 +151,7 @@ namespace NhaKhoa.Thuoc
                     return;
                 }
 
-                var thuoc = new Models.Thuoc
+                var thuoc = new DAL.Models.Thuoc
                 {
                     MaThuoc = txt_mathuoc.Text, // Có thể để trống để BUS tự sinh
                     TenThuoc = txt_tenthuoc.Text,
@@ -182,7 +181,7 @@ namespace NhaKhoa.Thuoc
                     return;
                 }
 
-                var thuoc = new Models.Thuoc
+                var thuoc = new DAL.Models.Thuoc
                 {
                     MaThuoc = txt_mathuoc.Text,
                     TenThuoc = txt_tenthuoc.Text,

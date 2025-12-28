@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NhaKhoa.DAL;
-using NhaKhoa.Models;
+using NhaKhoa.DAL.Models;
 
 namespace NhaKhoa.BUS
 {
@@ -22,7 +22,7 @@ namespace NhaKhoa.BUS
         public List<UserRoles> LayUserRolesTheoUserId(int userId)
         {
             if (userId <= 0)
-                throw new ArgumentException("ID ngu?i dùng không h?p l?");
+                throw new ArgumentException("ID ngu?i dï¿½ng khï¿½ng h?p l?");
 
             return _dal.GetByUserId(userId);
         }
@@ -30,15 +30,15 @@ namespace NhaKhoa.BUS
         public void GanRoleChoUser(int userId, int roleId)
         {
             if (userId <= 0)
-                throw new ArgumentException("ID ngu?i dùng không h?p l?");
+                throw new ArgumentException("ID ngu?i dï¿½ng khï¿½ng h?p l?");
 
             if (roleId <= 0)
-                throw new ArgumentException("ID vai trò không h?p l?");
+                throw new ArgumentException("ID vai trï¿½ khï¿½ng h?p l?");
 
-            // Ki?m tra dã có chua
+            // Ki?m tra dï¿½ cï¿½ chua
             var existing = _dal.GetById(userId, roleId);
             if (existing != null)
-                throw new ArgumentException("Ngu?i dùng dã có vai trò này");
+                throw new ArgumentException("Ngu?i dï¿½ng dï¿½ cï¿½ vai trï¿½ nï¿½y");
 
             var userRole = new UserRoles
             {
@@ -52,10 +52,10 @@ namespace NhaKhoa.BUS
         public void XoaRoleKhoiUser(int userId, int roleId)
         {
             if (userId <= 0)
-                throw new ArgumentException("ID ngu?i dùng không h?p l?");
+                throw new ArgumentException("ID ngu?i dï¿½ng khï¿½ng h?p l?");
 
             if (roleId <= 0)
-                throw new ArgumentException("ID vai trò không h?p l?");
+                throw new ArgumentException("ID vai trï¿½ khï¿½ng h?p l?");
 
             _dal.Delete(userId, roleId);
         }
@@ -63,7 +63,7 @@ namespace NhaKhoa.BUS
         public void XoaTatCaRoleCuaUser(int userId)
         {
             if (userId <= 0)
-                throw new ArgumentException("ID ngu?i dùng không h?p l?");
+                throw new ArgumentException("ID ngu?i dï¿½ng khï¿½ng h?p l?");
 
             _dal.DeleteByUserId(userId);
         }

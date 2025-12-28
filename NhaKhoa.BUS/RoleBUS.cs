@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NhaKhoa.DAL;
-using NhaKhoa.Models;
+using NhaKhoa.DAL.Models;
 
 namespace NhaKhoa.BUS
 {
@@ -27,7 +27,7 @@ namespace NhaKhoa.BUS
         public Roles LayRoleTheoTen(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Tên vai trò không du?c d? tr?ng");
+                throw new ArgumentException("Tï¿½n vai trï¿½ khï¿½ng du?c d? tr?ng");
 
             return _dal.GetByName(name);
         }
@@ -35,12 +35,12 @@ namespace NhaKhoa.BUS
         public void ThemRole(Roles role)
         {
             if (string.IsNullOrWhiteSpace(role.Name))
-                throw new ArgumentException("Tên vai trò không du?c d? tr?ng");
+                throw new ArgumentException("Tï¿½n vai trï¿½ khï¿½ng du?c d? tr?ng");
 
-            // Ki?m tra trùng tên
+            // Ki?m tra trï¿½ng tï¿½n
             var existing = _dal.GetByName(role.Name);
             if (existing != null)
-                throw new ArgumentException($"Vai trò {role.Name} dã t?n t?i");
+                throw new ArgumentException($"Vai trï¿½ {role.Name} dï¿½ t?n t?i");
 
             _dal.Insert(role);
         }
@@ -48,14 +48,14 @@ namespace NhaKhoa.BUS
         public void CapNhatRole(Roles role)
         {
             if (role.Id <= 0)
-                throw new ArgumentException("ID vai trò không h?p l?");
+                throw new ArgumentException("ID vai trï¿½ khï¿½ng h?p l?");
 
             if (string.IsNullOrWhiteSpace(role.Name))
-                throw new ArgumentException("Tên vai trò không du?c d? tr?ng");
+                throw new ArgumentException("Tï¿½n vai trï¿½ khï¿½ng du?c d? tr?ng");
 
             var existing = _dal.GetById(role.Id);
             if (existing == null)
-                throw new ArgumentException($"Không tìm th?y vai trò v?i ID {role.Id}");
+                throw new ArgumentException($"Khï¿½ng tï¿½m th?y vai trï¿½ v?i ID {role.Id}");
 
             _dal.Update(role);
         }
@@ -63,7 +63,7 @@ namespace NhaKhoa.BUS
         public void XoaRole(int id)
         {
             if (id <= 0)
-                throw new ArgumentException("ID vai trò không h?p l?");
+                throw new ArgumentException("ID vai trï¿½ khï¿½ng h?p l?");
 
             _dal.Delete(id);
         }

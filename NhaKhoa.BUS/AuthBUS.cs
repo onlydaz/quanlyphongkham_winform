@@ -1,6 +1,5 @@
 using System;
 using NhaKhoa.DAL;
-using NhaKhoa.Models;
 
 namespace NhaKhoa.BUS
 {
@@ -16,7 +15,7 @@ namespace NhaKhoa.BUS
         public string Login(string username, string password)
         {
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
-                throw new ArgumentException("Vui lòng nh?p d?y d? tên dang nh?p và m?t kh?u!");
+                throw new ArgumentException("Vui lï¿½ng nh?p d?y d? tï¿½n dang nh?p vï¿½ m?t kh?u!");
 
             var userInfo = _userDal.GetPasswordHashAndRole(username);
             if (userInfo == null)

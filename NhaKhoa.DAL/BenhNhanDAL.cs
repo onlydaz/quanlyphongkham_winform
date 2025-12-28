@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using NhaKhoa.Models;
+using NhaKhoa.DAL.Models;
 
 namespace NhaKhoa.DAL
 {
@@ -30,7 +30,7 @@ namespace NhaKhoa.DAL
             {
                 var query = ctx.BenhNhans.AsQueryable();
 
-                // N?u có keyword, tìm ki?m theo OR logic (mã HO?C tên HO?C SDT ch?a keyword)
+                // N?u cï¿½ keyword, tï¿½m ki?m theo OR logic (mï¿½ HO?C tï¿½n HO?C SDT ch?a keyword)
                 bool hasMa = !string.IsNullOrWhiteSpace(ma);
                 bool hasTen = !string.IsNullOrWhiteSpace(ten);
                 bool hasSdt = !string.IsNullOrWhiteSpace(sdt);
@@ -52,19 +52,19 @@ namespace NhaKhoa.DAL
         {
             using (var ctx = new NhaKhoaContext())
             {
-                // Th? cách 1: Query thông thu?ng
+                // Th? cï¿½ch 1: Query thï¿½ng thu?ng
                 try
                 {
                     var query = ctx.BenhNhans.AsQueryable();
                     
                     if (string.IsNullOrEmpty(trangThai))
                     {
-                        // N?u trangThai là null ho?c empty, l?y các record có TrangThai là null ho?c empty
+                        // N?u trangThai lï¿½ null ho?c empty, l?y cï¿½c record cï¿½ TrangThai lï¿½ null ho?c empty
                         query = query.Where(x => x.TrangThai == null || x.TrangThai == "" || x.TrangThai == trangThai);
                     }
                     else
                     {
-                        // So sánh chính xác, không phân bi?t hoa thu?ng
+                        // So sï¿½nh chï¿½nh xï¿½c, khï¿½ng phï¿½n bi?t hoa thu?ng
                         query = query.Where(x => x.TrangThai != null && x.TrangThai.Trim() == trangThai.Trim());
                     }
                     
@@ -74,17 +74,17 @@ namespace NhaKhoa.DAL
                     System.Diagnostics.Debug.WriteLine($"GetByTrangThai('{trangThai}') - S? k?t qu?: {result.Count}");
                     if (result.Count > 0)
                     {
-                        System.Diagnostics.Debug.WriteLine($"Ví d? TrangThai: '{result.First().TrangThai ?? "NULL"}'");
+                        System.Diagnostics.Debug.WriteLine($"Vï¿½ d? TrangThai: '{result.First().TrangThai ?? "NULL"}'");
                     }
                     
                     return result;
                 }
                 catch (Exception ex)
                 {
-                    // N?u có l?i, th? load t?t c? r?i filter trong memory
+                    // N?u cï¿½ l?i, th? load t?t c? r?i filter trong memory
                     System.Diagnostics.Debug.WriteLine($"L?i query TrangThai: {ex.Message}");
                     var all = ctx.BenhNhans.ToList();
-                    System.Diagnostics.Debug.WriteLine($"T?ng s? b?nh nhân: {all.Count}");
+                    System.Diagnostics.Debug.WriteLine($"T?ng s? b?nh nhï¿½n: {all.Count}");
                     
                     if (string.IsNullOrEmpty(trangThai))
                     {

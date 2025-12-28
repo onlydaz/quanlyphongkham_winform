@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NhaKhoa.DAL;
-using NhaKhoa.Models;
+using NhaKhoa.DAL.Models;
 
 namespace NhaKhoa.BUS
 {
@@ -32,7 +32,7 @@ namespace NhaKhoa.BUS
         public Users LayUserTheoUsername(string username)
         {
             if (string.IsNullOrWhiteSpace(username))
-                throw new ArgumentException("Tên dang nh?p không du?c d? tr?ng");
+                throw new ArgumentException("Tï¿½n dang nh?p khï¿½ng du?c d? tr?ng");
 
             return _dal.GetByUsername(username);
         }
@@ -40,15 +40,15 @@ namespace NhaKhoa.BUS
         public void ThemUser(Users user)
         {
             if (string.IsNullOrWhiteSpace(user.Username))
-                throw new ArgumentException("Tên dang nh?p không du?c d? tr?ng");
+                throw new ArgumentException("Tï¿½n dang nh?p khï¿½ng du?c d? tr?ng");
 
             if (string.IsNullOrWhiteSpace(user.PasswordHash))
-                throw new ArgumentException("M?t kh?u không du?c d? tr?ng");
+                throw new ArgumentException("M?t kh?u khï¿½ng du?c d? tr?ng");
 
-            // Ki?m tra trùng username
+            // Ki?m tra trï¿½ng username
             var existing = _dal.GetByUsername(user.Username);
             if (existing != null)
-                throw new ArgumentException($"Tên dang nh?p {user.Username} dã t?n t?i");
+                throw new ArgumentException($"Tï¿½n dang nh?p {user.Username} dï¿½ t?n t?i");
 
             if (user.CreatedAt == default(DateTime))
                 user.CreatedAt = DateTime.Now;
@@ -59,14 +59,14 @@ namespace NhaKhoa.BUS
         public void CapNhatUser(Users user)
         {
             if (user.Id <= 0)
-                throw new ArgumentException("ID ngu?i dùng không h?p l?");
+                throw new ArgumentException("ID ngu?i dï¿½ng khï¿½ng h?p l?");
 
             if (string.IsNullOrWhiteSpace(user.Username))
-                throw new ArgumentException("Tên dang nh?p không du?c d? tr?ng");
+                throw new ArgumentException("Tï¿½n dang nh?p khï¿½ng du?c d? tr?ng");
 
             var existing = _dal.GetById(user.Id);
             if (existing == null)
-                throw new ArgumentException($"Không tìm th?y ngu?i dùng v?i ID {user.Id}");
+                throw new ArgumentException($"Khï¿½ng tï¿½m th?y ngu?i dï¿½ng v?i ID {user.Id}");
 
             _dal.Update(user);
         }
@@ -74,7 +74,7 @@ namespace NhaKhoa.BUS
         public void XoaUser(int id)
         {
             if (id <= 0)
-                throw new ArgumentException("ID ngu?i dùng không h?p l?");
+                throw new ArgumentException("ID ngu?i dï¿½ng khï¿½ng h?p l?");
 
             _dal.Delete(id);
         }

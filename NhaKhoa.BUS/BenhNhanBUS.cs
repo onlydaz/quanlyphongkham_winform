@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NhaKhoa.DAL;
-using NhaKhoa.Models;
+using NhaKhoa.DAL.Models;
 
 namespace NhaKhoa.BUS
 {
@@ -22,7 +22,7 @@ namespace NhaKhoa.BUS
         public BenhNhan LayBenhNhanTheoMa(string maBN)
         {
             if (string.IsNullOrWhiteSpace(maBN))
-                throw new ArgumentException("Mã b?nh nhân không du?c d? tr?ng");
+                throw new ArgumentException("Mï¿½ b?nh nhï¿½n khï¿½ng du?c d? tr?ng");
 
             return _dal.GetById(maBN);
         }
@@ -32,7 +32,7 @@ namespace NhaKhoa.BUS
             return _dal.Search(ma, ten, sdt);
         }
 
-        public List<BenhNhan> LayDanhSachChoKham(string trangThai = "Ch? khám")
+        public List<BenhNhan> LayDanhSachChoKham(string trangThai = "Ch? khï¿½m")
         {
             return _dal.GetByTrangThai(trangThai);
         }
@@ -40,18 +40,18 @@ namespace NhaKhoa.BUS
         public void ThemBenhNhan(BenhNhan bn)
         {
             if (string.IsNullOrWhiteSpace(bn.TenBN))
-                throw new ArgumentException("Tên b?nh nhân không du?c d? tr?ng");
+                throw new ArgumentException("Tï¿½n b?nh nhï¿½n khï¿½ng du?c d? tr?ng");
 
             if (bn.NamSinh < 1900 || bn.NamSinh > DateTime.Now.Year)
-                throw new ArgumentException("Nam sinh không h?p l?");
+                throw new ArgumentException("Nam sinh khï¿½ng h?p l?");
 
             if (string.IsNullOrWhiteSpace(bn.MaBN))
                 bn.MaBN = _dal.GetNewMaBN();
 
-            // Ki?m tra trùng mã
+            // Ki?m tra trï¿½ng mï¿½
             var existing = _dal.GetById(bn.MaBN);
             if (existing != null)
-                throw new ArgumentException($"Mã b?nh nhân {bn.MaBN} dã t?n t?i");
+                throw new ArgumentException($"Mï¿½ b?nh nhï¿½n {bn.MaBN} dï¿½ t?n t?i");
 
             _dal.Insert(bn);
         }
@@ -59,17 +59,17 @@ namespace NhaKhoa.BUS
         public void CapNhatBenhNhan(BenhNhan bn)
         {
             if (string.IsNullOrWhiteSpace(bn.MaBN))
-                throw new ArgumentException("Mã b?nh nhân không du?c d? tr?ng");
+                throw new ArgumentException("Mï¿½ b?nh nhï¿½n khï¿½ng du?c d? tr?ng");
 
             if (string.IsNullOrWhiteSpace(bn.TenBN))
-                throw new ArgumentException("Tên b?nh nhân không du?c d? tr?ng");
+                throw new ArgumentException("Tï¿½n b?nh nhï¿½n khï¿½ng du?c d? tr?ng");
 
             if (bn.NamSinh < 1900 || bn.NamSinh > DateTime.Now.Year)
-                throw new ArgumentException("Nam sinh không h?p l?");
+                throw new ArgumentException("Nam sinh khï¿½ng h?p l?");
 
             var existing = _dal.GetById(bn.MaBN);
             if (existing == null)
-                throw new ArgumentException($"Không tìm th?y b?nh nhân v?i mã {bn.MaBN}");
+                throw new ArgumentException($"Khï¿½ng tï¿½m th?y b?nh nhï¿½n v?i mï¿½ {bn.MaBN}");
 
             _dal.Update(bn);
         }
@@ -77,7 +77,7 @@ namespace NhaKhoa.BUS
         public void XoaBenhNhan(string maBN)
         {
             if (string.IsNullOrWhiteSpace(maBN))
-                throw new ArgumentException("Mã b?nh nhân không h?p l?");
+                throw new ArgumentException("Mï¿½ b?nh nhï¿½n khï¿½ng h?p l?");
 
             _dal.Delete(maBN);
         }
@@ -85,14 +85,14 @@ namespace NhaKhoa.BUS
         public void CapNhatTrangThai(string maBN, string trangThai)
         {
             if (string.IsNullOrWhiteSpace(maBN))
-                throw new ArgumentException("Mã b?nh nhân không du?c d? tr?ng");
+                throw new ArgumentException("Mï¿½ b?nh nhï¿½n khï¿½ng du?c d? tr?ng");
 
             if (string.IsNullOrWhiteSpace(trangThai))
-                throw new ArgumentException("Tr?ng thái không du?c d? tr?ng");
+                throw new ArgumentException("Tr?ng thï¿½i khï¿½ng du?c d? tr?ng");
 
             var existing = _dal.GetById(maBN);
             if (existing == null)
-                throw new ArgumentException($"Không tìm th?y b?nh nhân v?i mã {maBN}");
+                throw new ArgumentException($"Khï¿½ng tï¿½m th?y b?nh nhï¿½n v?i mï¿½ {maBN}");
 
             existing.TrangThai = trangThai;
             _dal.Update(existing);
