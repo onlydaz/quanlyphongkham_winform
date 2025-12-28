@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using NhaKhoa.BUS;
 using OfficeOpenXml;
-using NhaKhoa.GUI;
+using NhaKhoa;
 
 namespace NhaKhoa.NhaSi
 {

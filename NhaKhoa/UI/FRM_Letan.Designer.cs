@@ -32,6 +32,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.labelBacSi = new System.Windows.Forms.Label();
+            this.cboBacSi = new System.Windows.Forms.ComboBox();
+            this.labelGio = new System.Windows.Forms.Label();
+            this.cboGioBD = new System.Windows.Forms.ComboBox();
+            this.cboGioKT = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -89,6 +94,11 @@
             // panel1
             // 
             this.panel1.Controls.Add(this.dateTimePicker2);
+            this.panel1.Controls.Add(this.labelBacSi);
+            this.panel1.Controls.Add(this.cboBacSi);
+            this.panel1.Controls.Add(this.labelGio);
+            this.panel1.Controls.Add(this.cboGioBD);
+            this.panel1.Controls.Add(this.cboGioKT);
             this.panel1.Controls.Add(this.label9);
             this.panel1.Controls.Add(this.richTextBox1);
             this.panel1.Controls.Add(this.label8);
@@ -106,34 +116,87 @@
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.label10);
             this.panel1.Location = new System.Drawing.Point(154, 184);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1475, 341);
             this.panel1.TabIndex = 7;
             // 
             // dateTimePicker2
             // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(827, 32);
-            this.dateTimePicker2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dateTimePicker2.CustomFormat = "dd/MM/yyyy";
+            this.dateTimePicker2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker2.Location = new System.Drawing.Point(826, 27);
+            this.dateTimePicker2.Margin = new System.Windows.Forms.Padding(4);
             this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(317, 22);
+            this.dateTimePicker2.Size = new System.Drawing.Size(166, 26);
             this.dateTimePicker2.TabIndex = 22;
+            // 
+            // labelBacSi
+            // 
+            this.labelBacSi.AutoSize = true;
+            this.labelBacSi.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.labelBacSi.Location = new System.Drawing.Point(702, 82);
+            this.labelBacSi.Name = "labelBacSi";
+            this.labelBacSi.Size = new System.Drawing.Size(62, 20);
+            this.labelBacSi.TabIndex = 23;
+            this.labelBacSi.Text = "Bác sĩ:";
+            // 
+            // cboBacSi
+            // 
+            this.cboBacSi.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboBacSi.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.cboBacSi.FormattingEnabled = true;
+            this.cboBacSi.Location = new System.Drawing.Point(826, 79);
+            this.cboBacSi.Name = "cboBacSi";
+            this.cboBacSi.Size = new System.Drawing.Size(317, 28);
+            this.cboBacSi.TabIndex = 24;
+            // 
+            // labelGio
+            // 
+            this.labelGio.AutoSize = true;
+            this.labelGio.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.labelGio.Location = new System.Drawing.Point(701, 138);
+            this.labelGio.Name = "labelGio";
+            this.labelGio.Size = new System.Drawing.Size(85, 20);
+            this.labelGio.TabIndex = 25;
+            this.labelGio.Text = "Giờ khám:";
+            // 
+            // cboGioBD
+            // 
+            this.cboGioBD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboGioBD.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.cboGioBD.FormattingEnabled = true;
+            this.cboGioBD.Location = new System.Drawing.Point(826, 132);
+            this.cboGioBD.Name = "cboGioBD";
+            this.cboGioBD.Size = new System.Drawing.Size(117, 28);
+            this.cboGioBD.TabIndex = 26;
+            // 
+            // cboGioKT
+            // 
+            this.cboGioKT.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboGioKT.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.cboGioKT.FormattingEnabled = true;
+            this.cboGioKT.Location = new System.Drawing.Point(967, 132);
+            this.cboGioKT.Name = "cboGioKT";
+            this.cboGioKT.Size = new System.Drawing.Size(118, 28);
+            this.cboGioKT.TabIndex = 27;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.label9.Location = new System.Drawing.Point(717, 36);
+            this.label9.Location = new System.Drawing.Point(702, 31);
             this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(94, 20);
+            this.label9.Size = new System.Drawing.Size(97, 20);
             this.label9.TabIndex = 16;
-            this.label9.Text = "ngày khám:";
+            this.label9.Text = "Ngày khám:";
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(826, 105);
-            this.richTextBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.richTextBox1.Location = new System.Drawing.Point(828, 187);
+            this.richTextBox1.Margin = new System.Windows.Forms.Padding(4);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(372, 130);
             this.richTextBox1.TabIndex = 15;
@@ -143,7 +206,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.label8.Location = new System.Drawing.Point(717, 105);
+            this.label8.Location = new System.Drawing.Point(701, 186);
             this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(95, 20);
@@ -154,7 +217,7 @@
             // 
             this.radioButton2.AutoSize = true;
             this.radioButton2.Location = new System.Drawing.Point(307, 294);
-            this.radioButton2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButton2.Margin = new System.Windows.Forms.Padding(4);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(45, 20);
             this.radioButton2.TabIndex = 12;
@@ -166,7 +229,7 @@
             this.radioButton1.AutoSize = true;
             this.radioButton1.Checked = true;
             this.radioButton1.Location = new System.Drawing.Point(192, 294);
-            this.radioButton1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButton1.Margin = new System.Windows.Forms.Padding(4);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(57, 20);
             this.radioButton1.TabIndex = 11;
@@ -176,16 +239,19 @@
             // 
             // dateTimePicker1
             // 
+            this.dateTimePicker1.CustomFormat = "dd/MM/yyyy";
+            this.dateTimePicker1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateTimePicker1.Location = new System.Drawing.Point(192, 241);
-            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(4);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(317, 22);
+            this.dateTimePicker1.Size = new System.Drawing.Size(141, 26);
             this.dateTimePicker1.TabIndex = 10;
             // 
             // textBox4
             // 
             this.textBox4.Location = new System.Drawing.Point(192, 186);
-            this.textBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox4.Margin = new System.Windows.Forms.Padding(4);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(317, 22);
             this.textBox4.TabIndex = 9;
@@ -193,7 +259,7 @@
             // textBox3
             // 
             this.textBox3.Location = new System.Drawing.Point(192, 82);
-            this.textBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox3.Margin = new System.Windows.Forms.Padding(4);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(317, 22);
             this.textBox3.TabIndex = 8;
@@ -201,7 +267,7 @@
             // textBox2
             // 
             this.textBox2.Location = new System.Drawing.Point(192, 135);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(4);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(317, 22);
             this.textBox2.TabIndex = 7;
@@ -209,7 +275,7 @@
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(192, 31);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(317, 22);
             this.textBox1.TabIndex = 6;
@@ -284,6 +350,9 @@
             // 
             this.dgvDSBN.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvDSBN.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            // Instantiate dynamically added columns
+            this.BacSi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.GioKham = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvDSBN.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.MaBN,
             this.TenBN,
@@ -292,12 +361,14 @@
             this.SDT,
             this.DiaChi,
             this.NgayTao,
+            this.BacSi,
+            this.GioKham,
             this.Column1});
             this.dgvDSBN.Location = new System.Drawing.Point(160, 619);
-            this.dgvDSBN.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dgvDSBN.Margin = new System.Windows.Forms.Padding(4);
             this.dgvDSBN.Name = "dgvDSBN";
             this.dgvDSBN.RowHeadersWidth = 51;
-            this.dgvDSBN.Size = new System.Drawing.Size(1532, 506);
+            this.dgvDSBN.Size = new System.Drawing.Size(1532, 300);
             this.dgvDSBN.TabIndex = 9;
             // 
             // MaBN
@@ -342,6 +413,18 @@
             this.NgayTao.MinimumWidth = 6;
             this.NgayTao.Name = "NgayTao";
             // 
+            // BacSi
+            // 
+            this.BacSi.HeaderText = "Tên bác sĩ";
+            this.BacSi.MinimumWidth = 6;
+            this.BacSi.Name = "BacSi";
+            // 
+            // GioKham
+            // 
+            this.GioKham.HeaderText = "Giờ khám";
+            this.GioKham.MinimumWidth = 6;
+            this.GioKham.Name = "GioKham";
+            // 
             // Column1
             // 
             this.Column1.HeaderText = "Ghi chú";
@@ -351,7 +434,7 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(313, 565);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(127, 37);
             this.button1.TabIndex = 10;
@@ -361,7 +444,7 @@
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(512, 565);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button2.Margin = new System.Windows.Forms.Padding(4);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(173, 37);
             this.button2.TabIndex = 11;
@@ -371,7 +454,7 @@
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(779, 565);
-            this.button3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button3.Margin = new System.Windows.Forms.Padding(4);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(189, 37);
             this.button3.TabIndex = 12;
@@ -381,7 +464,7 @@
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(1048, 565);
-            this.button4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button4.Margin = new System.Windows.Forms.Padding(4);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(173, 37);
             this.button4.TabIndex = 13;
@@ -391,7 +474,7 @@
             // button5
             // 
             this.button5.Location = new System.Drawing.Point(1316, 565);
-            this.button5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button5.Margin = new System.Windows.Forms.Padding(4);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(120, 37);
             this.button5.TabIndex = 14;
@@ -402,7 +485,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1782, 1055);
+            this.ClientSize = new System.Drawing.Size(1829, 1055);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
@@ -412,7 +495,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FRM_Letan";
             this.Text = "Lễ tân";
             this.panel1.ResumeLayout(false);
@@ -445,6 +528,11 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label labelBacSi;
+        private System.Windows.Forms.ComboBox cboBacSi;
+        private System.Windows.Forms.Label labelGio;
+        private System.Windows.Forms.ComboBox cboGioBD;
+        private System.Windows.Forms.ComboBox cboGioKT;
         private System.Windows.Forms.DataGridView dgvDSBN;
         private System.Windows.Forms.DataGridViewTextBoxColumn MaBN;
         private System.Windows.Forms.DataGridViewTextBoxColumn TenBN;
@@ -454,6 +542,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn DiaChi;
         private System.Windows.Forms.DataGridViewTextBoxColumn NgayTao;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BacSi;
+        private System.Windows.Forms.DataGridViewTextBoxColumn GioKham;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;

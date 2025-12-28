@@ -17,17 +17,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace NhaKhoa.GUI
+namespace NhaKhoa
 {
     public partial class frmMain : Form
     {
         private string _userRole;
+        private int _loggedInUserId;
         private Form _currentContent;
 
-        public frmMain(string role)
+        public frmMain(string role, int loggedInUserId = 0)
         {
             InitializeComponent();
             _userRole = role;
+            _loggedInUserId = loggedInUserId;
 
             UC_Menu menu = new UC_Menu();
             menu.Dock = DockStyle.Left;
@@ -127,15 +129,25 @@ namespace NhaKhoa.GUI
                         formToOpen = new FRM_Hoadon();
                     break;
 
+                case "Doanhthu":
+                    formToOpen = new FRM_DoanhThu();
+                    break;
+
+                case "LichLamViec":
+                    // Pass logged in user id so doctor form can auto-select the corresponding NhanVien
+                    formToOpen = new NhaKhoa.UI.FRM_LichLamViec(_loggedInUserId);
+                    break;
+
+                case "QuanLyLichLamViec":
+                    formToOpen = new NhaKhoa.UI.FRM_QuanLyLichLamViec();
+                    break;
+
                 case "PhieuKham":
                     formToOpen = new FRM_Letan();
                     break;
 
                 case "DanhSachChoKham":
                     formToOpen = new FRM_Nhasi();
-                    break;
-                case "Doanhthu":
-                    formToOpen = new FRM_DoanhThu(); 
                     break;
             }
 

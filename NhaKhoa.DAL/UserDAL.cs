@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using NhaKhoa.DAL.Models;
 
 namespace NhaKhoa.DAL
 {
     public class UserDAL
     {
-        public List<Users> GetAll()
+        public List<Models.Users> GetAll()
         {
             using (var ctx = new NhaKhoaContext())
             {
@@ -18,7 +17,7 @@ namespace NhaKhoa.DAL
             }
         }
 
-        public Users GetById(int id)
+        public Models.Users GetById(int id)
         {
             using (var ctx = new NhaKhoaContext())
             {
@@ -28,7 +27,7 @@ namespace NhaKhoa.DAL
             }
         }
 
-        public Users GetByUsername(string username)
+        public Models.Users GetByUsername(string username)
         {
             using (var ctx = new NhaKhoaContext())
             {
@@ -38,7 +37,7 @@ namespace NhaKhoa.DAL
             }
         }
 
-        public (string PasswordHash, string RoleName)? GetPasswordHashAndRole(string username)
+        public (int UserId, string PasswordHash, string RoleName)? GetPasswordHashAndRole(string username)
         {
             using (var ctx = new NhaKhoaContext())
             {
@@ -50,21 +49,21 @@ namespace NhaKhoa.DAL
                     return null;
 
                 var role = user.UserRoles.First().Role;
-                return (user.PasswordHash, role.Name);
+                return (user.Id, user.PasswordHash, role.Name);
             }
         }
 
-        public List<TaiKhoan> GetAllTaiKhoan()
+        public List<Models.TaiKhoan> GetAllTaiKhoan()
         {
             using (var ctx = new NhaKhoaContext())
             {
-                // Load v? memory tru?c d? c� th? d�ng string.Join
+                // Load về memory trước để có thể dùng string.Join
                 var users = ctx.Users
                               .Include(x => x.UserRoles.Select(ur => ur.Role))
                               .Where(x => x.IsActive)
                               .ToList();
 
-                var result = new List<TaiKhoan>();
+                var result = new List<Models.TaiKhoan>();
 
                 foreach (var u in users)
                 {
@@ -73,14 +72,14 @@ namespace NhaKhoa.DAL
                                  .Where(r => !string.IsNullOrEmpty(r))
                                  .ToList() ?? new List<string>();
 
-                    result.Add(new TaiKhoan
+                    result.Add(new Models.TaiKhoan
                     {
                         Id = u.Id,
                         Username = u.Username,
                         FullName = u.FullName,
                         Email = u.Email,
                         IsActive = u.IsActive,
-                        Status = u.IsActive ? "Ho?t d?ng" : "Kh�ng ho?t d?ng",
+                        Status = u.IsActive ? "Hoạt động" : "Không hoạt động",
                         Roles = string.Join(", ", roles)
                     });
                 }
@@ -89,7 +88,7 @@ namespace NhaKhoa.DAL
             }
         }
 
-        public void Insert(Users user)
+        public void Insert(Models.Users user)
         {
             using (var ctx = new NhaKhoaContext())
             {
@@ -98,7 +97,7 @@ namespace NhaKhoa.DAL
             }
         }
 
-        public void Update(Users user)
+        public void Update(Models.Users user)
         {
             using (var ctx = new NhaKhoaContext())
             {

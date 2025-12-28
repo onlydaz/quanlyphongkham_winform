@@ -1,4 +1,4 @@
-﻿namespace NhaKhoa.GUI
+﻿namespace NhaKhoa
 {
     partial class frmMain
     {

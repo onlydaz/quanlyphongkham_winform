@@ -62,10 +62,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BenhNhanDAL.cs" />
+  <Compile Include="BenhNhanDAL.cs" />
     <Compile Include="ChanDoanDAL.cs" />
     <Compile Include="DieuTriDAL.cs" />
     <Compile Include="HoaDonDAL.cs" />
+  <Compile Include="LichBacSiDAL.cs" />
     <Compile Include="NhaKhoaContext.cs" />
     <Compile Include="NhanVienDAL.cs" />
     <Compile Include="RoleDAL.cs" />
@@ -78,7 +79,8 @@
     <Compile Include="Models\ChanDoan.cs" />
     <Compile Include="Models\DieuTri.cs" />
     <Compile Include="Models\HoaDon.cs" />
-    <Compile Include="Models\LamSan.cs" />
+  <Compile Include="Models\LamSan.cs" />
+  <Compile Include="Models\LichBacSi.cs" />
     <Compile Include="Models\NhanVien.cs" />
     <Compile Include="Models\Roles.cs" />
     <Compile Include="Models\TaiKhoan.cs" />

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using OfficeOpenXml;
-using NhaKhoa.DAL;
 
-namespace NhaKhoa.GUI
+namespace NhaKhoa
 {
     internal static class Program
     {
@@ -17,10 +15,6 @@ namespace NhaKhoa.GUI
         [STAThread]
         static void Main()
         {
-            // Tự động tạo database và bảng nếu chưa tồn tại
-            // Chỉ tạo database nếu chưa có, không xóa dữ liệu hiện có
-            Database.SetInitializer(new CreateDatabaseIfNotExists<NhaKhoaContext>());
-            
             // Set license cho EPPlus 8+ (chỉ set một lần khi khởi động ứng dụng)
             ExcelPackage.License.SetNonCommercialPersonal("NhaKhoa");
             
@@ -34,7 +28,7 @@ namespace NhaKhoa.GUI
                 var login = new Login();
                 if (login.ShowDialog() == DialogResult.OK)
                 {
-                    var main = new frmMain(login.LoggedInRole);
+                    var main = new frmMain(login.LoggedInRole, login.LoggedInUserId);
                     main.FormClosed += (s, args) =>
                     {
                         if (main.DialogResult == DialogResult.Abort)

@@ -1,6 +1,6 @@
 namespace NhaKhoa.UI
 {
-    partial class FormInHoaDonLamSan
+    public partial class FormInHoaDonLamSan
     {
         /// <summary>
         /// Required designer variable.

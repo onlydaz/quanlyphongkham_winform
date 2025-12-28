@@ -1,11 +1,11 @@
 ﻿using Microsoft.Data.SqlClient;
 
-namespace NhaKhoa.GUI
+namespace NhaKhoa
 {
     public static class DatabaseHelper
     {
         // SỬA SERVER CHO PHÙ HỢP VỚI MÁY BẠN
         public static string ConnectionString =
-            @"Server=(local)\SQLEXPRESS;Database=QuanLyPhongKham;Trusted_Connection=True;TrustServerCertificate=True;";
+            @"Server=LAPTOP-DA8RJKG7;Database=QuanLyPhongKham;Trusted_Connection=True;TrustServerCertificate=True;";
     }
 }

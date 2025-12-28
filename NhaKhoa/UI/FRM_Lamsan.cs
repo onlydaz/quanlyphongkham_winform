@@ -12,7 +12,7 @@ using NhaKhoa.DAL;
 using NhaKhoa.DAL.Models;
 using NhaKhoa.UI;
 
-namespace NhaKhoa.GUI
+namespace NhaKhoa
 {
     public partial class FRM_Lamsan : Form
     {
@@ -283,7 +283,7 @@ namespace NhaKhoa.GUI
             try
             {
                 // Mở form in hóa đơn với ReportViewer
-                FormInHoaDonLamSan formInHoaDon = new FormInHoaDonLamSan(_maBN);
+                var formInHoaDon = new NhaKhoa.UI.FormInHoaDonLamSan(_maBN);
                 formInHoaDon.ShowDialog();
             }
             catch (Exception ex)

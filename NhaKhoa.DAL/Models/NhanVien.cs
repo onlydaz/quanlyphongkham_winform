@@ -12,14 +12,14 @@ namespace NhaKhoa.DAL.Models
     public class NhanVien
     {
         [Key]
-        [StringLength(50)]
+        [StringLength(10)]
         public string MaNV { get; set; }
 
         [Required]
         [StringLength(100)]
         public string TenNV { get; set; }
 
-        [StringLength(50)]
+        [StringLength(10)]
         public string MaCV { get; set; }
 
         [StringLength(20)]
@@ -40,9 +40,3 @@ namespace NhaKhoa.DAL.Models
         public string DiaChi { get; set; }
     }
 }
-
-
-
-
-
-

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace NhaKhoa.GUI
+namespace NhaKhoa
 {
     public partial class UC_Menu : UserControl
     {
@@ -21,7 +21,7 @@ namespace NhaKhoa.GUI
         // Phân quyền menu
         public void SetRoleVisibility(string role)
         {
-            // Ẩn tất cả
+            // Ẩn tất cả trước
             btn_Taikhoan.Visible = false;
             btn_Benhnhan.Visible = false;
             btn_Nhanvien.Visible = false;
@@ -29,30 +29,69 @@ namespace NhaKhoa.GUI
             btn_Thuoc.Visible = false;
             btn_Hoadon.Visible = false;
             btn_Doanhthu.Visible = false;
+            btn_LichLamViec.Visible = false;
+            btn_QuanLyLich.Visible = false;
             btn_phieukhambenh.Visible = false;
             btn_Dichvu.Visible = false;
             btn_ds.Visible = false;
+            btn_Dangxuat.Visible = false;
 
-            switch (role.ToLower())
+            if (string.IsNullOrWhiteSpace(role)) return;
+
+            string Normalize(string s)
             {
-                case "admin":
-                    btn_Taikhoan.Visible = true;
-                    btn_Benhnhan.Visible = true;
-                    btn_Nhanvien.Visible = true;
-                    btn_Vatlieu.Visible = true;
-                    btn_Thuoc.Visible = true;
-                    btn_Hoadon.Visible = true;
-                    btn_Doanhthu.Visible = true;
-                    btn_Dichvu.Visible = true;
-                    break;
-                case "doctor":
-                    btn_ds.Visible = true;
-                    btn_Hoadon.Visible = true;
-                    break;
-                case "receptionist":
-                    btn_phieukhambenh.Visible = true;
-                    break;
+                var normalized = s.Normalize(System.Text.NormalizationForm.FormD);
+                var sb = new System.Text.StringBuilder();
+                foreach (var ch in normalized)
+                {
+                    var uc = System.Globalization.CharUnicodeInfo.GetUnicodeCategory(ch);
+                    if (uc != System.Globalization.UnicodeCategory.NonSpacingMark)
+                        sb.Append(ch);
+                }
+                return sb.ToString().Normalize(System.Text.NormalizationForm.FormC).ToLowerInvariant();
             }
+
+            var r = Normalize(role);
+
+            // Admin: show full admin menu
+            if (r.Contains("admin") || r.Contains("quantri") || r.Contains("quan tri") || r.Contains("quanly") || r.Contains("quan ly"))
+            {
+                btn_Taikhoan.Visible = true;
+                btn_Benhnhan.Visible = true;
+                btn_Nhanvien.Visible = true;
+                btn_Vatlieu.Visible = true;
+                btn_Thuoc.Visible = true;
+                btn_Hoadon.Visible = true;
+                btn_Doanhthu.Visible = true;
+                btn_Dichvu.Visible = true;
+                // Admin should see the admin schedule manager, not the doctor-specific schedule view
+                btn_QuanLyLich.Visible = true;
+                btn_LichLamViec.Visible = false;
+                btn_Dangxuat.Visible = true;
+                return;
+            }
+
+            // Doctor / Bác sĩ: show Danh sách, Hoá đơn, Đăng xuất
+            if (r.Contains("bacsi") || r.Contains("bac si") || r.Contains("bác sĩ") || r.Contains("doctor"))
+            {
+                btn_ds.Visible = true;       // Danh sách
+                btn_Hoadon.Visible = true;
+                btn_Dangxuat.Visible = true;
+                btn_LichLamViec.Visible = true;
+                return;
+            }
+
+            // Receptionist / Lễ tân
+            if (r.Contains("letan") || r.Contains("le tan") || r.Contains("le_tan") || r.Contains("receptionist"))
+            {
+                btn_phieukhambenh.Visible = true;
+                btn_Hoadon.Visible = true;
+                btn_Dangxuat.Visible = true;
+                return;
+            }
+
+            // Default: only show Logout
+            btn_Dangxuat.Visible = true;
         }
 
         private void btn_Taikhoan_Click(object sender, EventArgs e)
@@ -119,6 +158,16 @@ namespace NhaKhoa.GUI
         private void btn_Dichvu_Click(object sender, EventArgs e)
         {
             MenuItemClicked?.Invoke(this, new MenuItemEventArgs { MenuItem = "Dichvu" });
+        }
+
+        private void btn_LichLamViec_Click(object sender, EventArgs e)
+        {
+            MenuItemClicked?.Invoke(this, new MenuItemEventArgs { MenuItem = "LichLamViec" });
+        }
+
+        private void btn_QuanLyLich_Click(object sender, EventArgs e)
+        {
+            MenuItemClicked?.Invoke(this, new MenuItemEventArgs { MenuItem = "QuanLyLichLamViec" });
         }
     }
 

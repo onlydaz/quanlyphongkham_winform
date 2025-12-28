@@ -1,4 +1,4 @@
-﻿namespace NhaKhoa.GUI
+﻿namespace NhaKhoa
 {
     partial class UC_Menu
     {
@@ -35,6 +35,8 @@
             this.btn_Hoadon = new System.Windows.Forms.Button();
             this.btn_phieukhambenh = new System.Windows.Forms.Button();
             this.btn_Doanhthu = new System.Windows.Forms.Button();
+            this.btn_QuanLyLich = new System.Windows.Forms.Button();
+            this.btn_LichLamViec = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -138,6 +140,36 @@
             this.btn_phieukhambenh.UseVisualStyleBackColor = true;
             this.btn_phieukhambenh.Click += new System.EventHandler(this.btn_phieukhambenh_Click);
             // 
+            // btn_QuanLyLich
+            // 
+            this.btn_QuanLyLich.FlatAppearance.BorderSize = 0;
+            this.btn_QuanLyLich.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_QuanLyLich.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_QuanLyLich.ForeColor = System.Drawing.Color.Transparent;
+            this.btn_QuanLyLich.Location = new System.Drawing.Point(2, 420);
+            this.btn_QuanLyLich.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_QuanLyLich.Name = "btn_QuanLyLich";
+            this.btn_QuanLyLich.Size = new System.Drawing.Size(178, 49);
+            this.btn_QuanLyLich.TabIndex = 11;
+            this.btn_QuanLyLich.Text = "Quản lý lịch";
+            this.btn_QuanLyLich.UseVisualStyleBackColor = true;
+            this.btn_QuanLyLich.Click += new System.EventHandler(this.btn_QuanLyLich_Click);
+            // 
+            // btn_LichLamViec
+            // 
+            this.btn_LichLamViec.FlatAppearance.BorderSize = 0;
+            this.btn_LichLamViec.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_LichLamViec.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_LichLamViec.ForeColor = System.Drawing.Color.Transparent;
+            this.btn_LichLamViec.Location = new System.Drawing.Point(2, 473);
+            this.btn_LichLamViec.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_LichLamViec.Name = "btn_LichLamViec";
+            this.btn_LichLamViec.Size = new System.Drawing.Size(178, 49);
+            this.btn_LichLamViec.TabIndex = 12;
+            this.btn_LichLamViec.Text = "Lịch làm việc";
+            this.btn_LichLamViec.UseVisualStyleBackColor = true;
+            this.btn_LichLamViec.Click += new System.EventHandler(this.btn_LichLamViec_Click);
+            // 
             // btn_Doanhthu
             // 
             this.btn_Doanhthu.FlatAppearance.BorderSize = 0;
@@ -210,6 +242,8 @@
             this.btn_dschokham.Controls.Add(this.btn_Thuoc);
             this.btn_dschokham.Controls.Add(this.btn_phieukhambenh);
             this.btn_dschokham.Controls.Add(this.btn_Dichvu);
+            this.btn_dschokham.Controls.Add(this.btn_QuanLyLich);
+            this.btn_dschokham.Controls.Add(this.btn_LichLamViec);
             this.btn_dschokham.Controls.Add(this.btn_ds);
             this.btn_dschokham.Controls.Add(this.btn_Hoadon);
             this.btn_dschokham.Controls.Add(this.btn_Doanhthu);
@@ -287,6 +321,8 @@
         private System.Windows.Forms.Button btn_Vatlieu;
         private System.Windows.Forms.Button btn_Thuoc;
         private System.Windows.Forms.Button btn_Hoadon;
+        private System.Windows.Forms.Button btn_QuanLyLich;
+        private System.Windows.Forms.Button btn_LichLamViec;
         private System.Windows.Forms.Button btn_phieukhambenh;
         private System.Windows.Forms.Button btn_Doanhthu;
         private System.Windows.Forms.Panel panel2;

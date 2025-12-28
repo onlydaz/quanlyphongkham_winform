@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="AuthBUS.cs" />
     <Compile Include="BenhNhanBUS.cs" />
+    <Compile Include="LichBacSiBUS.cs" />
     <Compile Include="ChanDoanBUS.cs" />
     <Compile Include="DieuTriBUS.cs" />
     <Compile Include="HoaDonBUS.cs" />
