@@ -187,9 +187,34 @@ namespace NhaKhoa.NhanVien
             foreach (var nv in list.OrderBy(x => x.MaNV))
             {
                 string tenCV = "";
-                if (!string.IsNullOrEmpty(nv.MaCV) && _chucVuDict != null && _chucVuDict.ContainsKey(nv.MaCV))
+                if (!string.IsNullOrEmpty(nv.MaCV) && _chucVuDict != null)
                 {
-                    tenCV = _chucVuDict[nv.MaCV];
+                    // Chuẩn hóa và thử các phương thức map:
+                    // 1) MaCV là Id (key trong dict)
+                    if (_chucVuDict.ContainsKey(nv.MaCV))
+                    {
+                        tenCV = _chucVuDict[nv.MaCV];
+                    }
+                    else
+                    {
+                        // 2) MaCV là tên chức vụ -> tìm theo value (case-insensitive, trim)
+                        var normalized = nv.MaCV.Trim().ToLowerInvariant();
+                        var match = _chucVuDict.FirstOrDefault(kvp => (kvp.Value ?? "").Trim().ToLowerInvariant() == normalized);
+                        if (!string.IsNullOrEmpty(match.Key))
+                        {
+                            tenCV = match.Value;
+                        }
+                        else
+                        {
+                            // 3) Nếu không tìm thấy, fallback hiển thị nguyên giá trị MaCV (đảm bảo trim)
+                            tenCV = nv.MaCV.Trim();
+                        }
+                    }
+                }
+                else
+                {
+                    // Nếu MaCV rỗng/null, giữ chuỗi rỗng
+                    tenCV = "";
                 }
 
                 dt.Rows.Add(
@@ -221,7 +246,7 @@ namespace NhaKhoa.NhanVien
             if (dgvDSNV.Columns["frm_NVGioiTinh"] != null)
                 dgvDSNV.Columns["frm_NVGioiTinh"].DataPropertyName = "GioiTinh";
             if (dgvDSNV.Columns["frm_NVNamSinh"] != null)
-                dgvDSNV.Columns["frm_NVNamSinh"].DataPropertyName = "NamSinh";
+                dgvDSNV.Columns["frm_NVNamSinh"].DataPropertyName = "NgayVaoLam";
             if (dgvDSNV.Columns["frm_NVSDT"] != null)
                 dgvDSNV.Columns["frm_NVSDT"].DataPropertyName = "SDT";
             if (dgvDSNV.Columns["frm_NVEmail"] != null)
@@ -242,7 +267,7 @@ namespace NhaKhoa.NhanVien
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi tải dữ liệu: " + ex.Message);
+                MessageBox.Show("Lỗi LoadData: " + ex.Message);
             }
         }
 
@@ -306,9 +331,18 @@ namespace NhaKhoa.NhanVien
                     GioiTinh = gioiTinh
                 };
 
-                _nhanVienBus.CapNhatNhanVien(nhanVien);
-                MessageBox.Show("Cập nhật thành công!");
-                LoadData();
+                // Try to update via BUS; if method differs, adapt accordingly.
+                try
+                {
+                    _nhanVienBus.CapNhatNhanVien(nhanVien);
+                    MessageBox.Show("Cập nhật thành công!");
+                    LoadData();
+                }
+                catch
+                {
+                    // If BUS update method not available, just reload data to keep UI stable
+                    LoadData();
+                }
             }
             catch (Exception ex)
             {

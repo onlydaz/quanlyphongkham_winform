@@ -109,9 +109,10 @@ namespace NhaKhoa.DAL
         {
             using (var ctx = new NhaKhoaContext())
             {
-                // Load ChucVu từ database sử dụng EF
+                // Load ChucVu từ bảng Roles (nếu DB dùng bảng Roles thay vì CHUCVU)
+                // CAST Id sang varchar để khớp kiểu MaCV (string) trong UI
                 var chucVuList = ctx.Database.SqlQuery<ChucVuInfo>(
-                    "SELECT MaCV, TenCV FROM CHUCVU ORDER BY TenCV"
+                    "SELECT CAST(Id AS VARCHAR(50)) AS MaCV, Name AS TenCV FROM Roles ORDER BY Name"
                 ).ToList();
 
                 return chucVuList;

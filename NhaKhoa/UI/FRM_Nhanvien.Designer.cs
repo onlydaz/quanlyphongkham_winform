@@ -340,7 +340,7 @@
             // 
             // frm_NVNamSinh
             // 
-            this.frm_NVNamSinh.HeaderText = "Năm sinh";
+            this.frm_NVNamSinh.HeaderText = "Ngày vào làm";
             this.frm_NVNamSinh.MinimumWidth = 6;
             this.frm_NVNamSinh.Name = "frm_NVNamSinh";
             // 
