@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.Entity;
 using NhaKhoa.BUS;
 using NhaKhoa.DAL;
 using NhaKhoa.DAL.Models;
@@ -183,27 +184,65 @@ namespace NhaKhoa
                     ctx.Configuration.ValidateOnSaveEnabled = false;
                     ctx.Configuration.AutoDetectChangesEnabled = false;
 
-                    string maLS = GetNewMaLS(ctx);
+                    // Try to find an existing appointment created earlier (e.g., by receptionist)
+                    // Match by MaBN and no MaCD/MaDT assigned yet. Choose the most recent one.
+                    var existing = ctx.LamSans
+                        .Where(x => x.MaBN == _maBN && (x.MaCD == null || x.MaCD == "") && (x.MaDT == null || x.MaDT == ""))
+                        .OrderByDescending(x => x.NgayKham)
+                        .FirstOrDefault();
 
-                    var lamSan = new LamSan
+                    if (existing != null)
                     {
-                        MaLS = maLS,
-                        MaBN = _maBN,
-                        MaCD = maCD,
-                        MaDT = maDT,
-                        NgayKham = DateTime.Now,
-                        TrieuChung = "",
-                        MaNV = ""
-                    };
+                        // Update existing record: keep existing GioBatDau/GioKetThuc/TrieuChung if present
+                        existing.MaCD = maCD;
+                        existing.MaDT = maDT;
+                        // If TrieuChung is empty on existing, keep as is or set from UI if provided
+                        if (string.IsNullOrWhiteSpace(existing.TrieuChung)) existing.TrieuChung = "";
+                        // If MaNV is null on existing, try to copy from a template appointment
+                        var templateForExisting = ctx.LamSans
+                            .Where(x => x.MaBN == _maBN && (x.GioBatDau != null || x.GioKetThuc != null || !string.IsNullOrEmpty(x.TrieuChung) || !string.IsNullOrEmpty(x.MaNV)))
+                            .OrderByDescending(x => x.NgayKham)
+                            .FirstOrDefault();
+                        if (string.IsNullOrWhiteSpace(existing.MaNV) && templateForExisting != null)
+                        {
+                            existing.MaNV = templateForExisting.MaNV;
+                        }
 
-                    ctx.LamSans.Add(lamSan);
+                        ctx.Entry(existing).State = EntityState.Modified;
+                    }
+                    else
+                    {
+                        // No pre-existing appointment: create a new one
+                        string maLS = GetNewMaLS(ctx);
+
+                        // Try to copy time/symptom info from a previous appointment for same patient
+                        var template = ctx.LamSans
+                            .Where(x => x.MaBN == _maBN && (x.GioBatDau != null || x.GioKetThuc != null || !string.IsNullOrEmpty(x.TrieuChung)))
+                            .OrderByDescending(x => x.NgayKham)
+                            .FirstOrDefault();
+
+                        var lamSan = new LamSan
+                        {
+                            MaLS = maLS,
+                            MaBN = _maBN,
+                            MaCD = maCD,
+                            MaDT = maDT,
+                            NgayKham = DateTime.Now,
+                            TrieuChung = template?.TrieuChung ?? "",
+                            GioBatDau = template?.GioBatDau,
+                            GioKetThuc = template?.GioKetThuc,
+                            MaNV = string.IsNullOrWhiteSpace(template?.MaNV) ? null : template.MaNV
+                        };
+                        ctx.LamSans.Add(lamSan);
+                    }
+
                     ctx.SaveChanges();
 
-                    MessageBox.Show("Thêm lâm sàn thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    
+                    MessageBox.Show("Thêm/Cập nhật lâm sàn thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                     cbChanDoan.SelectedIndex = -1;
                     cboDieuTri.SelectedIndex = -1;
-                    
+
                     LoadDanhSachLamSan();
                 }
             }

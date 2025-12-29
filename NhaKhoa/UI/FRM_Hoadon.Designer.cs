@@ -34,14 +34,14 @@
             this.dtpDenNgay = new System.Windows.Forms.DateTimePicker();
             this.dtpTuNgay = new System.Windows.Forms.DateTimePicker();
             this.cboNhanVien = new System.Windows.Forms.ComboBox();
-            this.txtMaHoaDon = new System.Windows.Forms.TextBox();
+            this.btnLoc = new System.Windows.Forms.Button();
             this.txtTenBenhNhan = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
+            this.label10_filter = new System.Windows.Forms.Label();
             this.dgvHoaDon = new System.Windows.Forms.DataGridView();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.btnXuatExcel = new System.Windows.Forms.ToolStripMenuItem();
@@ -78,59 +78,62 @@
             this.panel1.Controls.Add(this.dtpDenNgay);
             this.panel1.Controls.Add(this.dtpTuNgay);
             this.panel1.Controls.Add(this.cboNhanVien);
-            this.panel1.Controls.Add(this.txtMaHoaDon);
+            this.panel1.Controls.Add(this.btnLoc);
             this.panel1.Controls.Add(this.txtTenBenhNhan);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.label7);
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.label10);
+            this.panel1.Controls.Add(this.label10_filter);
             this.panel1.Location = new System.Drawing.Point(118, 214);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1421, 263);
             this.panel1.TabIndex = 7;
             // 
             // dtpDenNgay
             // 
+            this.dtpDenNgay.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpDenNgay.Location = new System.Drawing.Point(800, 167);
-            this.dtpDenNgay.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtpDenNgay.Margin = new System.Windows.Forms.Padding(4);
             this.dtpDenNgay.Name = "dtpDenNgay";
-            this.dtpDenNgay.Size = new System.Drawing.Size(261, 22);
+            this.dtpDenNgay.Size = new System.Drawing.Size(184, 22);
             this.dtpDenNgay.TabIndex = 19;
             // 
             // dtpTuNgay
             // 
+            this.dtpTuNgay.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpTuNgay.Location = new System.Drawing.Point(800, 100);
-            this.dtpTuNgay.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtpTuNgay.Margin = new System.Windows.Forms.Padding(4);
             this.dtpTuNgay.Name = "dtpTuNgay";
-            this.dtpTuNgay.Size = new System.Drawing.Size(261, 22);
+            this.dtpTuNgay.Size = new System.Drawing.Size(184, 22);
             this.dtpTuNgay.TabIndex = 19;
             // 
             // cboNhanVien
             // 
             this.cboNhanVien.FormattingEnabled = true;
             this.cboNhanVien.Location = new System.Drawing.Point(192, 100);
-            this.cboNhanVien.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboNhanVien.Margin = new System.Windows.Forms.Padding(4);
             this.cboNhanVien.Name = "cboNhanVien";
             this.cboNhanVien.Size = new System.Drawing.Size(317, 24);
             this.cboNhanVien.TabIndex = 18;
             // 
-            // txtMaHoaDon
+            // btnLoc
             // 
-            this.txtMaHoaDon.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtMaHoaDon.Location = new System.Drawing.Point(192, 26);
-            this.txtMaHoaDon.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.txtMaHoaDon.Name = "txtMaHoaDon";
-            this.txtMaHoaDon.Size = new System.Drawing.Size(318, 22);
-            this.txtMaHoaDon.TabIndex = 9;
+            this.btnLoc.Location = new System.Drawing.Point(192, 215);
+            this.btnLoc.Name = "btnLoc";
+            this.btnLoc.Size = new System.Drawing.Size(100, 30);
+            this.btnLoc.TabIndex = 20;
+            this.btnLoc.Text = "Lọc";
+            this.btnLoc.UseVisualStyleBackColor = true;
+            this.btnLoc.Click += new System.EventHandler(this.btnLoc_Click);
             // 
             // txtTenBenhNhan
             // 
             this.txtTenBenhNhan.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtTenBenhNhan.Location = new System.Drawing.Point(192, 167);
-            this.txtTenBenhNhan.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtTenBenhNhan.Margin = new System.Windows.Forms.Padding(4);
             this.txtTenBenhNhan.Name = "txtTenBenhNhan";
             this.txtTenBenhNhan.Size = new System.Drawing.Size(318, 22);
             this.txtTenBenhNhan.TabIndex = 7;
@@ -172,7 +175,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.label6.Location = new System.Drawing.Point(688, 108);
+            this.label6.Location = new System.Drawing.Point(677, 102);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(73, 20);
@@ -183,30 +186,29 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.label5.Location = new System.Drawing.Point(649, 59);
+            this.label5.Location = new System.Drawing.Point(677, 49);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(110, 20);
             this.label5.TabIndex = 0;
             this.label5.Text = "Thời gian tạo:";
             // 
-            // label10
+            // label10_filter
             // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.label10.Location = new System.Drawing.Point(61, 31);
-            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(101, 20);
-            this.label10.TabIndex = 0;
-            this.label10.Text = "Mã hoá đơn:";
+            this.label10_filter.AutoSize = true;
+            this.label10_filter.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.label10_filter.Location = new System.Drawing.Point(44, 28);
+            this.label10_filter.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label10_filter.Name = "label10_filter";
+            this.label10_filter.Size = new System.Drawing.Size(0, 20);
+            this.label10_filter.TabIndex = 0;
             // 
             // dgvHoaDon
             // 
             this.dgvHoaDon.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvHoaDon.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvHoaDon.Location = new System.Drawing.Point(118, 521);
-            this.dgvHoaDon.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dgvHoaDon.Margin = new System.Windows.Forms.Padding(4);
             this.dgvHoaDon.Name = "dgvHoaDon";
             this.dgvHoaDon.RowHeadersWidth = 51;
             this.dgvHoaDon.Size = new System.Drawing.Size(1500, 441);
@@ -267,7 +269,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FRM_Hoadon";
             this.Text = "Quản lý hoá đơn";
             this.Load += new System.EventHandler(this.FRM_Hoadon_Load);
@@ -286,11 +288,11 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TextBox txtMaHoaDon;
         private System.Windows.Forms.TextBox txtTenBenhNhan;
+        private System.Windows.Forms.Button btnLoc;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label10_filter;
         private System.Windows.Forms.ComboBox cboNhanVien;
         private System.Windows.Forms.DataGridView dgvHoaDon;
         private System.Windows.Forms.MenuStrip menuStrip1;

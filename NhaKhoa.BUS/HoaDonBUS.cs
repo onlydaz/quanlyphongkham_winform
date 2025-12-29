@@ -27,9 +27,9 @@ namespace NhaKhoa.BUS
             return _dal.GetById(maHD);
         }
 
-        public List<HoaDon> TimKiem(string maHD = "", string maNV = "", string tenBN = "", DateTime? tuNgay = null, DateTime? denNgay = null)
+        public List<HoaDon> TimKiem(string maHD = "", string maNV = "", string tenBN = "", string tenNV = "", DateTime? tuNgay = null, DateTime? denNgay = null)
         {
-            return _dal.Search(maHD, maNV, tenBN, tuNgay, denNgay);
+            return _dal.Search(maHD, maNV, tenBN, tenNV, tuNgay, denNgay);
         }
 
         public void ThemHoaDon(HoaDon hd)

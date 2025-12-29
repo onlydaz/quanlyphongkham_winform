@@ -71,13 +71,14 @@ namespace NhaKhoa
                 return;
             }
 
-            // Doctor / Bác sĩ: show Danh sách, Hoá đơn, Đăng xuất
+            // Doctor / Bác sĩ: show Danh sách, Lịch làm việc, Đăng xuất (no Hoá đơn)
             if (r.Contains("bacsi") || r.Contains("bac si") || r.Contains("bác sĩ") || r.Contains("doctor"))
             {
                 btn_ds.Visible = true;       // Danh sách
-                btn_Hoadon.Visible = true;
-                btn_Dangxuat.Visible = true;
                 btn_LichLamViec.Visible = true;
+                btn_Dangxuat.Visible = true;
+                // intentionally hide Hoá đơn for doctors
+                btn_Hoadon.Visible = false;
                 return;
             }
 

@@ -7,118 +7,87 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Globalization;
+using NhaKhoa.BUS;
+using NhaKhoa.DAL.Models;
 
 namespace NhaKhoa.Hoadon
 {
     public partial class FRM_AddHoadon : Form
     {
-        // Dữ liệu giả lập
-        private List<BacSi> danhSachBacSi = new List<BacSi>();
-        private List<BenhNhan> danhSachBenhNhan = new List<BenhNhan>();
-        private List<DichVu> danhSachDichVu = new List<DichVu>();
+            // Services
+            private readonly HoaDonBUS _hoaDonBus;
+            private readonly BenhNhanBUS _benhNhanBus = new BenhNhanBUS();
+            private readonly NhanVienBUS _nhanVienBus = new NhanVienBUS();
+            private string maHoaDon = "";
+            private string maBenhNhanHienTai = "";
+            private string maNhanVienHienTai = "";
 
-        // Biến lưu trữ hoá đơn đang tạo
-        private string maHoaDon = "";
-        private string maBenhNhanHienTai = "";
-        private string maNhanVienHienTai = "";
+            public FRM_AddHoadon()
+            {
+                InitializeComponent();
+                _hoaDonBus = new HoaDonBUS();
+                LoadPatients();
+                SetupControls();
+            }
 
-        public FRM_AddHoadon()
-        {
-            InitializeComponent();
-            LoadData(); // Tải dữ liệu mẫu
-            SetupControls(); // Thiết lập ban đầu
-        }
-        // Class Bác sĩ
-        public class BacSi
-        {
-            public string Ma { get; set; }
-            public string Ten { get; set; }
-            public string ChucVu { get; set; }
-        }
+            private void LoadPatients()
+            {
+                try
+                {
+                    var list = _benhNhanBus.LayDanhSach();
+                    cmbMaBenhNhan.DataSource = list;
+                    cmbMaBenhNhan.DisplayMember = "MaBN";
+                    cmbMaBenhNhan.ValueMember = "MaBN";
+                    cmbMaBenhNhan.SelectedIndex = -1;
+                }
+                catch
+                {
+                    // ignore - UI still usable
+                }
+            }
 
-        // Class Bệnh nhân
-        public class BenhNhan
-        {
-            public string Ma { get; set; }
-            public string Ten { get; set; }
-            public string NgaySinh { get; set; }
-        }
+            private void SetupControls()
+            {
+                dtpNgayLap.Value = DateTime.Now;
+                dtpNgayLap.Format = DateTimePickerFormat.Custom;
+                dtpNgayLap.CustomFormat = "dd/MM/yyyy";
 
-        // Class Dịch vụ
-        public class DichVu
-        {
-            public string Ma { get; set; }
-            public string Ten { get; set; }
-            public decimal DonGia { get; set; }
-        }
-        private void LoadData()
-        {
-            // Giả lập bác sĩ đăng nhập (bạn nên lấy từ session thật)
-            danhSachBacSi.Add(new BacSi { Ma = "BS001", Ten = "Dr. Trần Thị B", ChucVu = "Bác sĩ Nội khoa" });
+                // Populate employee combobox with available staff (for selecting who issues the invoice)
+                // Staff selection is locked — MaNV is set from selected LamSan. Leave txtMaNV empty.
 
-            // Giả lập bệnh nhân
-            danhSachBenhNhan.Add(new BenhNhan { Ma = "BN001", Ten = "Nguyễn Văn A", NgaySinh = "01/01/1980" });
-            danhSachBenhNhan.Add(new BenhNhan { Ma = "BN002", Ten = "Trần Thị B", NgaySinh = "15/03/1990" });
+                txtMaHoaDon.ReadOnly = true;
+                txtTenNhanVien.ReadOnly = true;
+                txtChucVu.ReadOnly = true;
+                txtTenBenhNhan.ReadOnly = true;
+                txtNgaySinh.ReadOnly = true;
+                txtThanhTien.ReadOnly = true;
 
-            // Giả lập dịch vụ
-            danhSachDichVu.Add(new DichVu { Ma = "DV001", Ten = "Khám nội tổng quát", DonGia = 150000 });
-            danhSachDichVu.Add(new DichVu { Ma = "DV002", Ten = "Xét nghiệm máu", DonGia = 300000 });
-            danhSachDichVu.Add(new DichVu { Ma = "DV003", Ten = "Thuốc kháng sinh", DonGia = 20000 });
-        }
-        private void SetupControls()
-        {
-            // Thiết lập DateTimePicker
-            dtpNgayLap.Value = DateTime.Now;
+                // Ensure dgvLamSan has the correct columns for Lâm sàng
+                try
+                {
+                    dgvLamSan.Columns.Clear();
+                    dgvLamSan.Columns.Add("ls_STT", "STT");
+                    dgvLamSan.Columns.Add("ls_MaLS", "Mã LS");
+                    dgvLamSan.Columns.Add("ls_NgayKham", "Ngày khám");
+                    // merged time column
+                    dgvLamSan.Columns.Add("ls_GioKham", "Giờ khám");
+                    dgvLamSan.Columns.Add("ls_TrieuChung", "Triệu chứng");
+                    // show diagnosis and treatment NAMES (not codes)
+                    dgvLamSan.Columns.Add("ls_TenCD", "Chẩn đoán");
+                    dgvLamSan.Columns.Add("ls_TenDT", "Điều trị");
+                    // final column for line total
+                    dgvLamSan.Columns.Add("ls_ThanhTien", "Thành tiền");
+                }
+                catch
+                {
+                    // ignore if designer doesn't have dgvLamSan at design-time
+                }
 
-            // Thiết lập combobox bác sĩ (chỉ có 1 người -> không cho chọn)
-            cmbMaNhanVien.DataSource = danhSachBacSi;
-            cmbMaNhanVien.DisplayMember = "Ma";
-            cmbMaNhanVien.ValueMember = "Ma";
-            cmbMaNhanVien.SelectedIndex = 0; // Chọn bác sĩ đầu tiên
-            cmbMaNhanVien.Enabled = false; // Không cho chọn
+                // old service grid removed — nothing to hide
 
-            // Thiết lập combobox bệnh nhân
-            cmbMaBenhNhan.DataSource = danhSachBenhNhan;
-            cmbMaBenhNhan.DisplayMember = "Ma";
-            cmbMaBenhNhan.ValueMember = "Ma";
-            cmbMaBenhNhan.SelectedIndex = -1; // Chưa chọn
-
-            // Thiết lập DataGridView
-            dgvDichVu.AutoGenerateColumns = false;
-            dgvDichVu.Columns.Clear();
-
-            var colSTT = new DataGridViewTextBoxColumn { Name = "colSTT", HeaderText = "STT", Width = 40 };
-            var colDichVu = new DataGridViewComboBoxColumn { Name = "colDichVu", HeaderText = "Dịch vụ", Width = 150 };
-            var colSoLuong = new DataGridViewTextBoxColumn { Name = "colSoLuong", HeaderText = "Số lượng", Width = 80 };
-            var colDonGia = new DataGridViewTextBoxColumn { Name = "colDonGia", HeaderText = "Đơn giá", Width = 100 };
-            var colThanhTien = new DataGridViewTextBoxColumn { Name = "colThanhTien", HeaderText = "Thành tiền", Width = 100 };
-            var colGhiChu = new DataGridViewTextBoxColumn { Name = "colGhiChu", HeaderText = "Ghi chú", Width = 120 };
-            var colXoa = new DataGridViewButtonColumn { Name = "colXoa", HeaderText = "Xóa", Width = 60 };
-
-            dgvDichVu.Columns.Add(colSTT);
-            dgvDichVu.Columns.Add(colDichVu);
-            dgvDichVu.Columns.Add(colSoLuong);
-            dgvDichVu.Columns.Add(colDonGia);
-            dgvDichVu.Columns.Add(colThanhTien);
-            dgvDichVu.Columns.Add(colGhiChu);
-            dgvDichVu.Columns.Add(colXoa);
-
-            // Gán dữ liệu cho cột Dịch vụ
-            ((DataGridViewComboBoxColumn)dgvDichVu.Columns["colDichVu"]).DataSource = danhSachDichVu;
-            ((DataGridViewComboBoxColumn)dgvDichVu.Columns["colDichVu"]).DisplayMember = "Ten";
-            ((DataGridViewComboBoxColumn)dgvDichVu.Columns["colDichVu"]).ValueMember = "Ma";
-
-            // Thiết lập readonly cho một số trường
-            txtMaHoaDon.ReadOnly = true;
-            txtTenNhanVien.ReadOnly = true;
-            txtChucVu.ReadOnly = true;
-            txtTenBenhNhan.ReadOnly = true;
-            txtNgaySinh.ReadOnly = true;
-            txtThanhTien.ReadOnly = true;
-
-            // Tự động sinh mã hoá đơn
-            GenerateInvoiceCode();
-        }
+                GenerateInvoiceCode();
+            }
         private void GenerateInvoiceCode()
         {
             string datePart = dtpNgayLap.Value.ToString("yyyyMMdd");
@@ -132,125 +101,272 @@ namespace NhaKhoa.Hoadon
             if (cmbMaBenhNhan.SelectedValue == null) return;
 
             string maBN = cmbMaBenhNhan.SelectedValue.ToString();
-            var bn = danhSachBenhNhan.FirstOrDefault(x => x.Ma == maBN);
+            maBenhNhanHienTai = maBN;
 
-            if (bn != null)
+            try
             {
-                maBenhNhanHienTai = maBN;
-                txtTenBenhNhan.Text = bn.Ten;
-                txtNgaySinh.Text = bn.NgaySinh;
+                var bn = _benhNhanBus.LayBenhNhanTheoMa(maBN);
+                if (bn != null)
+                {
+                    txtTenBenhNhan.Text = bn.TenBN;
+                    txtNgaySinh.Text = bn.NamSinh.ToString();
+                }
             }
+            catch
+            {
+            }
+
+            LoadLamSanForPatient(maBN);
         }
 
-        private void cmbMaNhanVien_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cmbMaNhanVien.SelectedValue == null) return;
+        // Staff textbox is readonly; MaNV is set from selected LamSan row.
 
-            string maNV = cmbMaNhanVien.SelectedValue.ToString();
-            var nv = danhSachBacSi.FirstOrDefault(x => x.Ma == maNV);
-
-            if (nv != null)
-            {
-                maNhanVienHienTai = maNV;
-                txtTenNhanVien.Text = nv.Ten;
-                txtChucVu.Text = nv.ChucVu;
-            }
-        }
-
-        private void dgvDichVu_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        private void dgvLamSan_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
-            var row = dgvDichVu.Rows[e.RowIndex];
-
-            if (e.ColumnIndex == dgvDichVu.Columns["colDichVu"].Index ||
-                e.ColumnIndex == dgvDichVu.Columns["colSoLuong"].Index)
+            var row = dgvLamSan.Rows[e.RowIndex];
+            // If user edits the treatment code column (ls_MaDT index 6), try to resolve price
+            try
             {
-                // Lấy mã dịch vụ
-                string maDV = row.Cells["colDichVu"].Value?.ToString();
-                if (string.IsNullOrEmpty(maDV)) return;
-
-                var dv = danhSachDichVu.FirstOrDefault(x => x.Ma == maDV);
-                if (dv == null) return;
-
-                // Lấy số lượng
-                int soLuong = 1;
-                if (int.TryParse(row.Cells["colSoLuong"].Value?.ToString(), out int sl))
-                    soLuong = sl > 0 ? sl : 1;
-
-                // Tính thành tiền
-                decimal thanhTien = soLuong * dv.DonGia;
-
-                // Cập nhật lại các ô
-                row.Cells["colDonGia"].Value = dv.DonGia.ToString("N0");
-                row.Cells["colThanhTien"].Value = thanhTien.ToString("N0");
-
-                // Cập nhật tổng tiền
-                CalculateTotal();
+                if (e.ColumnIndex == 6)
+                {
+                    // user edited treatment name column: try to resolve by MaDT or TenDieuTri
+                    string val = row.Cells[6].Value?.ToString();
+                    decimal dongia = 0;
+                    string foundName = "";
+                    if (!string.IsNullOrEmpty(val))
+                    {
+                        using (var ctx = new NhaKhoa.DAL.NhaKhoaContext())
+                        {
+                            // try by MaDT first
+                            var dt = ctx.DieuTris.AsNoTracking().SingleOrDefault(d => d.MaDT == val);
+                            if (dt == null)
+                                dt = ctx.DieuTris.AsNoTracking().SingleOrDefault(d => d.TenDieuTri == val);
+                            if (dt != null)
+                            {
+                                foundName = dt.TenDieuTri ?? dt.MaDT;
+                                if (dt.DonGia.HasValue) dongia = dt.DonGia.Value;
+                            }
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(foundName)) row.Cells[6].Value = foundName;
+                    row.Cells[7].Value = dongia.ToString("N0");
+                    CalculateTotal();
+                }
+                else if (e.ColumnIndex == 7)
+                {
+                    // line total edited directly -> recalc overall total
+                    CalculateTotal();
+                }
+            }
+            catch
+            {
+                // ignore
             }
         }
             private void CalculateTotal()
         {
             decimal total = 0;
-            foreach (DataGridViewRow row in dgvDichVu.Rows)
+            foreach (DataGridViewRow row in dgvLamSan.Rows)
             {
                 if (row.IsNewRow) continue;
-                if (decimal.TryParse(row.Cells["colThanhTien"].Value?.ToString(), out decimal tien))
+                if (decimal.TryParse(row.Cells[7].Value?.ToString(), NumberStyles.AllowThousands | NumberStyles.Number, CultureInfo.CurrentCulture, out decimal tien))
                     total += tien;
+                else
+                {
+                    // fallback: try invariant parsing after removing non-digit
+                    var cleaned = new string((row.Cells[7].Value?.ToString() ?? "").Where(c => char.IsDigit(c) || c == '.' || c == ',').ToArray());
+                    if (decimal.TryParse(cleaned, NumberStyles.AllowThousands | NumberStyles.Number, CultureInfo.InvariantCulture, out tien))
+                        total += tien;
+                }
             }
             txtThanhTien.Text = total.ToString("N0");
         }
 
         private void btnThemDichVu_Click(object sender, EventArgs e)
         {
-            int rowIndex = dgvDichVu.Rows.Add();
-            var row = dgvDichVu.Rows[rowIndex];
-            row.Cells["colSTT"].Value = (rowIndex + 1).ToString();
-            row.Cells["colSoLuong"].Value = "1";
-            row.Cells["colDonGia"].Value = "0";
-            row.Cells["colThanhTien"].Value = "0";
-            row.Cells["colGhiChu"].Value = "";
+            int rowIndex = dgvLamSan.Rows.Add();
+            var row = dgvLamSan.Rows[rowIndex];
+            row.Cells[0].Value = (rowIndex + 1).ToString();
+            row.Cells[1].Value = ""; // MaLS
+            row.Cells[2].Value = dtpNgayLap.Value.ToString("yyyy-MM-dd");
+            row.Cells[3].Value = ""; // GioKham
+            row.Cells[4].Value = ""; // TrieuChung
+            row.Cells[5].Value = ""; // MaCD
+            row.Cells[6].Value = ""; // MaDT
+            row.Cells[7].Value = "0"; // ThanhTien
+            CalculateTotal();
         }
 
-        private void dgvDichVu_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        // Load LAMSAN rows for a patient and display in dgvLamSan
+        private void LoadLamSanForPatient(string maBN)
         {
-            if (e.ColumnIndex == dgvDichVu.Columns["colXoa"].Index && e.RowIndex >= 0)
+            try
             {
-                if (MessageBox.Show("Bạn có chắc muốn xóa dòng này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                using (var ctx = new NhaKhoa.DAL.NhaKhoaContext())
                 {
-                    dgvDichVu.Rows.RemoveAt(e.RowIndex);
-                    ReindexSTT();
+                    var lamSans = ctx.LamSans.Where(x => x.MaBN == maBN).OrderByDescending(x => x.NgayKham).ToList();
+
+                    dgvLamSan.Rows.Clear();
+
+                    // Load chuc vu mapping once
+                    var chucVuList = _nhanVienBus.LayDanhSachChucVu();
+                    var chucVuMap = chucVuList.ToDictionary(c => c.MaCV, c => c.TenCV);
+
+                    int idx = 1;
+                    foreach (var ls in lamSans)
+                    {
+                        // build merged time string
+                        string gioKham = "";
+                        try
+                        {
+                            if (ls.GioBatDau != null && ls.GioKetThuc != null)
+                                gioKham = $"{ls.GioBatDau:hh\\:mm} - {ls.GioKetThuc:hh\\:mm}";
+                            else if (ls.GioBatDau != null)
+                                gioKham = ls.GioBatDau?.ToString();
+                            else if (ls.GioKetThuc != null)
+                                gioKham = ls.GioKetThuc?.ToString();
+                        }
+                        catch
+                        {
+                            gioKham = (ls.GioBatDau?.ToString() ?? "") + (ls.GioKetThuc != null ? (" - " + ls.GioKetThuc?.ToString()) : "");
+                        }
+
+                        string maCD = ls.MaCD ?? "";
+                        string maDT = ls.MaDT ?? "";
+
+                        // lookup human-friendly names
+                        string tenCD = "";
+                        string tenDT = "";
+                        decimal dongia = 0;
+                        try
+                        {
+                            if (!string.IsNullOrEmpty(maCD))
+                            {
+                                var cd = ctx.ChanDoans.AsNoTracking().SingleOrDefault(c => c.MaCD == maCD);
+                                if (cd != null) tenCD = cd.TenChuanDoan ?? cd.MaCD;
+                            }
+                            if (!string.IsNullOrEmpty(maDT))
+                            {
+                                var dt = ctx.DieuTris.AsNoTracking().SingleOrDefault(d => d.MaDT == maDT);
+                                if (dt != null)
+                                {
+                                    tenDT = dt.TenDieuTri ?? dt.MaDT;
+                                    if (dt.DonGia.HasValue) dongia = dt.DonGia.Value;
+                                }
+                            }
+                        }
+                        catch
+                        {
+                        }
+
+                        decimal thanhTien = dongia; // single-item per lamSan
+
+                        dgvLamSan.Rows.Add(idx++, ls.MaLS, ls.NgayKham?.ToString("yyyy-MM-dd"), gioKham, ls.TrieuChung, tenCD, tenDT, thanhTien.ToString("N0"));
+                    }
+                    // If any lamSan exists, prefill top staff info with first row (MaNV -> TenNV + ChucVu)
+                    if (lamSans.Any())
+                    {
+                        var first = lamSans.First();
+                        if (!string.IsNullOrEmpty(first.MaNV))
+                        {
+                            try
+                            {
+                                txtMaNV.Text = first.MaNV;
+                                maNhanVienHienTai = first.MaNV;
+                                var nv = ctx.NhanViens.AsNoTracking().SingleOrDefault(n => n.MaNV == first.MaNV);
+                                if (nv != null)
+                                {
+                                    txtTenNhanVien.Text = nv.TenNV;
+                                    if (!string.IsNullOrEmpty(nv.MaCV) && chucVuMap != null && chucVuMap.ContainsKey(nv.MaCV))
+                                        txtChucVu.Text = chucVuMap[nv.MaCV];
+                                    else
+                                        txtChucVu.Text = nv.MaCV ?? "";
+                                }
+                            }
+                            catch
+                            {
+                                // ignore
+                            }
+                        }
+                    }
+
+                    // Update total after rows populated
                     CalculateTotal();
                 }
             }
+            catch
+            {
+                // ignore errors silently for UI
+            }
+        }
+
+        private void dgvLamSan_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // No cell-based delete action in this view; keep handler to avoid designer errors.
         }
         private void ReindexSTT()
         {
-            for (int i = 0; i < dgvDichVu.Rows.Count; i++)
+            for (int i = 0; i < dgvLamSan.Rows.Count; i++)
             {
-                dgvDichVu.Rows[i].Cells["colSTT"].Value = (i + 1).ToString();
+                dgvLamSan.Rows[i].Cells[0].Value = (i + 1).ToString();
             }
         }
 
         private void btnLuu_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(maBenhNhanHienTai))
+            try
             {
-                MessageBox.Show("Vui lòng chọn bệnh nhân!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+                if (string.IsNullOrEmpty(maBenhNhanHienTai))
+                {
+                    MessageBox.Show("Vui lòng chọn bệnh nhân!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
-            if (dgvDichVu.Rows.Count == 0 || dgvDichVu.Rows[0].IsNewRow)
+                if (dgvLamSan.Rows.Count == 0 || dgvLamSan.Rows[0].IsNewRow)
+                {
+                    MessageBox.Show("Vui lòng thêm ít nhất 1 dịch vụ!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Parse tổng tiền (có thể có dấu phân cách hàng nghìn)
+                if (!decimal.TryParse(txtThanhTien.Text, NumberStyles.AllowThousands | NumberStyles.Number, CultureInfo.CurrentCulture, out decimal total))
+                {
+                    // Thử loại bỏ ký tự không phải số và parse bằng invariant
+                    var cleaned = new string(txtThanhTien.Text.Where(c => char.IsDigit(c) || c == '.' || c == ',').ToArray());
+                    if (!decimal.TryParse(cleaned, NumberStyles.AllowThousands | NumberStyles.Number, CultureInfo.InvariantCulture, out total))
+                    {
+                        MessageBox.Show("Tổng tiền không hợp lệ", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+
+                var hd = new HoaDon
+                {
+                    MaHD = null, // để BUS/DAL sinh MaHD
+                    NgayLapHD = dtpNgayLap.Value,
+                    TongTien = total,
+                    MaBN = maBenhNhanHienTai,
+                    MaNV = maNhanVienHienTai
+                };
+
+                _hoaDonBus.ThemHoaDon(hd);
+
+                // Hiển thị mã hoá đơn thực tế được sinh
+                txtMaHoaDon.Text = hd.MaHD;
+
+                MessageBox.Show($"Hoá đơn {hd.MaHD} đã được lưu thành công!\nTổng tiền: {txtThanhTien.Text}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Reset một số control
+                dgvLamSan.Rows.Clear();
+                CalculateTotal();
+                GenerateInvoiceCode();
+            }
+            catch (Exception ex)
             {
-                MessageBox.Show("Vui lòng thêm ít nhất 1 dịch vụ!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                MessageBox.Show("Lỗi khi lưu hoá đơn: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            // Giả lập lưu vào DB
-            MessageBox.Show($"Hoá đơn {maHoaDon} đã được lưu thành công!\nTổng tiền: {txtThanhTien.Text}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            // Reset form nếu cần
-            // ResetForm();
         }
 
         private void btnIn_Click(object sender, EventArgs e)
@@ -269,10 +385,14 @@ namespace NhaKhoa.Hoadon
                                  $"Bác sĩ: {txtTenNhanVien.Text} - {txtChucVu.Text}\n" +
                                  $"----------------------------------------\n";
 
-            foreach (DataGridViewRow row in dgvDichVu.Rows)
+            foreach (DataGridViewRow row in dgvLamSan.Rows)
             {
                 if (row.IsNewRow) continue;
-                invoiceInfo += $"{row.Cells["colDichVu"].Value} x {row.Cells["colSoLuong"].Value} = {row.Cells["colThanhTien"].Value}\n";
+                var maLS = row.Cells["ls_MaLS"].Value?.ToString() ?? "";
+                var tenCD = row.Cells["ls_TenCD"].Value?.ToString() ?? "";
+                var tenDT = row.Cells["ls_TenDT"].Value?.ToString() ?? "";
+                var thanh = row.Cells["ls_ThanhTien"].Value?.ToString() ?? "0";
+                invoiceInfo += $"{maLS} | {tenCD} | {tenDT} = {thanh}\n";
             }
 
             invoiceInfo += $"----------------------------------------\n" +

@@ -123,7 +123,24 @@ namespace NhaKhoa
                     break;
 
                 case "Hoadon":
-                    if (_userRole == "doctor")
+                    // Open AddHoadon for receptionist (who creates/manages invoices).
+                    // Use a normalized contains check to avoid exact-string mismatches.
+                    string NormalizeRole(string r)
+                    {
+                        if (string.IsNullOrWhiteSpace(r)) return string.Empty;
+                        var normalized = r.Normalize(System.Text.NormalizationForm.FormD);
+                        var sb = new System.Text.StringBuilder();
+                        foreach (var ch in normalized)
+                        {
+                            var uc = System.Globalization.CharUnicodeInfo.GetUnicodeCategory(ch);
+                            if (uc != System.Globalization.UnicodeCategory.NonSpacingMark)
+                                sb.Append(ch);
+                        }
+                        return sb.ToString().Normalize(System.Text.NormalizationForm.FormC).ToLowerInvariant();
+                    }
+
+                    var roleNorm = NormalizeRole(_userRole);
+                    if (roleNorm.Contains("letan") || roleNorm.Contains("le tan") || roleNorm.Contains("receptionist"))
                         formToOpen = new FRM_AddHoadon();
                     else
                         formToOpen = new FRM_Hoadon();

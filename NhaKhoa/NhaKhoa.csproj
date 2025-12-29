@@ -211,10 +211,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    
-    
-    
-    
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="UI\FormInDanhMuc.cs">
       <SubType>Form</SubType>
@@ -262,12 +258,17 @@
     <Compile Include="UI\FRM_Lamsan.Designer.cs">
       <DependentUpon>FRM_Lamsan.cs</DependentUpon>
     </Compile>
-    
     <Compile Include="UI\FRM_AddHoadon.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\FRM_AddHoadon.Designer.cs">
       <DependentUpon>FRM_AddHoadon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FRM_ChiTietHD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FRM_ChiTietHD.Designer.cs">
+      <DependentUpon>FRM_ChiTietHD.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\FRM_Hoadon.cs">
       <SubType>Form</SubType>
@@ -287,6 +288,9 @@
     <Compile Include="UI\FRM_DoanhThu.Designer.cs">
       <DependentUpon>FRM_DoanhThu.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UI\FRM_ChiTietHD.resx">
+      <DependentUpon>FRM_ChiTietHD.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\FRM_DoanhThu.resx">
       <DependentUpon>FRM_DoanhThu.cs</DependentUpon>
     </EmbeddedResource>
@@ -296,7 +300,6 @@
     <Compile Include="UI\FRM_Letan.Designer.cs">
       <DependentUpon>FRM_Letan.cs</DependentUpon>
     </Compile>
-    
     <Compile Include="UI\FRM_Nhanvien.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -372,7 +375,6 @@
     <EmbeddedResource Include="UI\FRM_Lamsan.resx">
       <DependentUpon>FRM_Lamsan.cs</DependentUpon>
     </EmbeddedResource>
-    
     <EmbeddedResource Include="UI\FRM_AddHoadon.resx">
       <DependentUpon>FRM_AddHoadon.cs</DependentUpon>
     </EmbeddedResource>

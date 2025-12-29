@@ -30,7 +30,7 @@ namespace NhaKhoa.DAL
             }
         }
 
-        public List<HoaDon> Search(string maHD = "", string maNV = "", string tenBN = "", DateTime? tuNgay = null, DateTime? denNgay = null)
+        public List<HoaDon> Search(string maHD = "", string maNV = "", string tenBN = "", string tenNV = "", DateTime? tuNgay = null, DateTime? denNgay = null)
         {
             using (var ctx = new NhaKhoaContext())
             {
@@ -47,6 +47,9 @@ namespace NhaKhoa.DAL
 
                 if (!string.IsNullOrWhiteSpace(tenBN))
                     query = query.Where(x => x.BenhNhan.TenBN.Contains(tenBN));
+
+                if (!string.IsNullOrWhiteSpace(tenNV))
+                    query = query.Where(x => x.NhanVien.TenNV.Contains(tenNV));
 
                 if (tuNgay.HasValue)
                 {

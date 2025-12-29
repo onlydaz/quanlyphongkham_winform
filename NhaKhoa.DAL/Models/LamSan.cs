@@ -15,8 +15,8 @@ namespace NhaKhoa.DAL.Models
         [StringLength(10)]
         public string MaLS { get; set; }
 
-        // Liên kết với BENHNHAN qua MaBN (nvarchar(10) in DB)
-        [StringLength(10)]
+        // Liên kết với BENHNHAN qua MaBN (cần khớp với BENHNHAN.MaBN)
+        [StringLength(50)]
         public string MaBN { get; set; }
 
         public DateTime? NgayKham { get; set; } // Default getdate()
@@ -34,11 +34,11 @@ namespace NhaKhoa.DAL.Models
         public string MaNV { get; set; } // nvarchar(10)
 
         // Khóa ngoại liên kết tới DIEUTRI
-        [StringLength(10)]
+        [StringLength(20)]
         public string MaDT { get; set; }
 
         // Khóa ngoại liên kết tới CHANDOAN
-        [StringLength(10)]
+        [StringLength(20)]
         public string MaCD { get; set; }
 
         // --- MAPPING / NAVIGATION PROPERTIES ---
