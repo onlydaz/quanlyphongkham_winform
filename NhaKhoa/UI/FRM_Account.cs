@@ -19,6 +19,7 @@ namespace NhaKhoa.TaiKhoan
         private readonly UserBUS _userBus;
         private readonly RoleBUS _roleBus;
         private readonly UserRoleBUS _userRoleBus;
+        private readonly NhanVienBUS _nhanVienBus;
 
         public FRM_Account()
         {
@@ -26,6 +27,9 @@ namespace NhaKhoa.TaiKhoan
             _userBus = new UserBUS();
             _roleBus = new RoleBUS();
             _userRoleBus = new UserRoleBUS();
+            _nhanVienBus = new NhanVienBUS();
+            // wire employee combobox change
+            this.cbEmployee.SelectedIndexChanged += CbEmployee_SelectedIndexChanged;
         }
         private void FRM_Account_Load(object sender, EventArgs e)
         {
@@ -35,7 +39,72 @@ namespace NhaKhoa.TaiKhoan
         private void LoadData()
         {
             LoadRoles();
+            LoadEmployees();
             LoadAccounts();
+        }
+
+        private void LoadEmployees()
+        {
+            try
+            {
+                var list = _nhanVienBus.LayDanhSach().OrderBy(x => x.TenNV).ToList();
+                var items = new List<object>();
+                items.Add(new { MaNV = "", Text = "-- (Không liên kết) --" });
+                foreach (var nv in list)
+                {
+                    items.Add(new { MaNV = nv.MaNV, Text = nv.MaNV + " - " + nv.TenNV });
+                }
+                cbEmployee.DataSource = items;
+                cbEmployee.DisplayMember = "Text";
+                cbEmployee.ValueMember = "MaNV";
+                cbEmployee.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void CbEmployee_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                // Khi đang tạo user mới (currentUserId == 0), cho phép lấy thông tin từ NhanVien
+                if (currentUserId == 0 && cbEmployee.SelectedValue != null)
+                {
+                    var ma = cbEmployee.SelectedValue as string;
+                    if (!string.IsNullOrEmpty(ma))
+                    {
+                        var nv = _nhanVienBus.LayNhanVienTheoMa(ma);
+                        if (nv != null)
+                        {
+                            // Prefill fullname/email nếu trống
+                            if (string.IsNullOrWhiteSpace(txtFullname.Text))
+                                txtFullname.Text = nv.TenNV;
+                            if (string.IsNullOrWhiteSpace(txtEmail.Text))
+                                txtEmail.Text = nv.Email;
+
+                            // Nếu NhanVien.MaCV chứa role id, gợi ý chọn role
+                            if (!string.IsNullOrWhiteSpace(nv.MaCV))
+                            {
+                                if (int.TryParse(nv.MaCV, out var roleId))
+                                {
+                                    for (int i = 0; i < cbRole.Items.Count; i++)
+                                    {
+                                        var item = cbRole.Items[i] as RoleItem;
+                                        if (item != null && item.Id == roleId)
+                                        {
+                                            cbRole.SelectedIndex = i;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch { }
         }
         private void LoadRoles()
         {
@@ -197,6 +266,21 @@ namespace NhaKhoa.TaiKhoan
                     cbRole.SelectedIndex = 0;
 
                 LoadUserRoles(currentUserId);
+
+                // Set linked employee in combobox if exists
+                try
+                {
+                    var linked = _nhanVienBus.LayDanhSach().FirstOrDefault(x => x.UserId == currentUserId);
+                    if (linked != null)
+                    {
+                        cbEmployee.SelectedValue = linked.MaNV;
+                    }
+                    else
+                    {
+                        cbEmployee.SelectedIndex = 0;
+                    }
+                }
+                catch { }
             }
         }
         private void LoadUserRoles(int userId)
@@ -289,6 +373,35 @@ namespace NhaKhoa.TaiKhoan
                     {
                         _userRoleBus.GanRoleChoUser(newUser.Id, selectedItem.Id);
                     }
+                    // Nếu đã chọn nhân viên, gán UserId cho nhân viên
+                    try
+                    {
+                        if (cbEmployee.SelectedItem != null)
+                        {
+                            var val = cbEmployee.SelectedValue as string;
+                            if (!string.IsNullOrEmpty(val))
+                            {
+                                var nv = _nhanVienBus.LayNhanVienTheoMa(val);
+                                if (nv != null)
+                                {
+                                    // Nếu đã có UserId, hỏi ghi đè
+                                    if (nv.UserId != null)
+                                    {
+                                        if (MessageBox.Show($"Nhân viên {nv.TenNV} đã có tài khoản, ghi đè?", "Xác nhận", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                                        {
+                                            // không ghi đè
+                                        }
+                                    }
+                                    nv.UserId = newUser.Id;
+                                    _nhanVienBus.CapNhatNhanVien(nv);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Không thể gán nhân viên: " + ex.Message);
+                    }
                 }
 
                 LoadData();
@@ -317,6 +430,18 @@ namespace NhaKhoa.TaiKhoan
                     _userRoleBus.XoaTatCaRoleCuaUser(currentUserId);
                     // Sau đó xóa user
                     _userBus.XoaUser(currentUserId);
+
+                    // Nếu có nhân viên liên kết, bỏ liên kết
+                    try
+                    {
+                        var nv = _nhanVienBus.LayDanhSach().FirstOrDefault(x => x.UserId == currentUserId);
+                        if (nv != null)
+                        {
+                            nv.UserId = null;
+                            _nhanVienBus.CapNhatNhanVien(nv);
+                        }
+                    }
+                    catch { }
 
                     LoadData();
                     ClearForm();
@@ -389,6 +514,25 @@ namespace NhaKhoa.TaiKhoan
                 {
                     _userRoleBus.GanRoleChoUser(currentUserId, selectedItem.Id);
                 }
+
+                // Cập nhật liên kết nhân viên (nếu chọn)
+                try
+                {
+                    if (cbEmployee.SelectedItem != null)
+                    {
+                        var val = cbEmployee.SelectedValue as string;
+                        if (!string.IsNullOrEmpty(val))
+                        {
+                            var nv = _nhanVienBus.LayNhanVienTheoMa(val);
+                            if (nv != null)
+                            {
+                                nv.UserId = currentUserId;
+                                _nhanVienBus.CapNhatNhanVien(nv);
+                            }
+                        }
+                    }
+                }
+                catch { }
 
                 LoadData();
                 ClearForm();

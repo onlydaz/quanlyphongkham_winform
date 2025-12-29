@@ -31,6 +31,8 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.cbRole = new System.Windows.Forms.ComboBox();
+            this.cbEmployee = new System.Windows.Forms.ComboBox();
+            this.labelEmployee = new System.Windows.Forms.Label();
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.txtEmail = new System.Windows.Forms.TextBox();
@@ -74,6 +76,8 @@
             // panel1
             // 
             this.panel1.Controls.Add(this.cbRole);
+            this.panel1.Controls.Add(this.labelEmployee);
+            this.panel1.Controls.Add(this.cbEmployee);
             this.panel1.Controls.Add(this.txtPassword);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.txtEmail);
@@ -90,6 +94,24 @@
             this.panel1.Size = new System.Drawing.Size(445, 639);
             this.panel1.TabIndex = 3;
             // 
+            // labelEmployee
+            // 
+            this.labelEmployee.AutoSize = true;
+            this.labelEmployee.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.labelEmployee.Location = new System.Drawing.Point(11, 320);
+            this.labelEmployee.Name = "labelEmployee";
+            this.labelEmployee.Size = new System.Drawing.Size(94, 20);
+            this.labelEmployee.TabIndex = 9;
+            this.labelEmployee.Text = "Nhân viên:";
+            // 
+            // cbEmployee
+            // 
+            this.cbEmployee.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cbEmployee.FormattingEnabled = true;
+            this.cbEmployee.Location = new System.Drawing.Point(130, 317);
+            this.cbEmployee.Name = "cbEmployee";
+            this.cbEmployee.Size = new System.Drawing.Size(170, 28);
+            this.cbEmployee.TabIndex = 10;
             // cbRole
             // 
             this.cbRole.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -318,5 +340,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ToolStripMenuItem btn_update;
         private System.Windows.Forms.ComboBox cbRole;
+        private System.Windows.Forms.Label labelEmployee;
+        private System.Windows.Forms.ComboBox cbEmployee;
     }
 }
