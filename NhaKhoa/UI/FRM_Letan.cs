@@ -34,6 +34,25 @@ namespace NhaKhoa.Letan
             // Wire up button click for "Thêm mới lịch hẹn" (button4)
             this.button4.Click -= Button4_Click; // ensure not double-wired
             this.button4.Click += Button4_Click;
+
+            // Wire up selection changed to populate fields for edit
+            if (this.dgvDSBN != null)
+            {
+                this.dgvDSBN.SelectionChanged -= DgvDSBN_SelectionChanged;
+                this.dgvDSBN.SelectionChanged += DgvDSBN_SelectionChanged;
+            }
+
+            // Wire up edit and delete buttons
+            if (this.button2 != null)
+            {
+                this.button2.Click -= Button2_EditAppointment_Click;
+                this.button2.Click += Button2_EditAppointment_Click;
+            }
+            if (this.button3 != null)
+            {
+                this.button3.Click -= Button3_DeleteAppointment_Click;
+                this.button3.Click += Button3_DeleteAppointment_Click;
+            }
         }
 
         private void LoadDoctors()
@@ -362,10 +381,170 @@ namespace NhaKhoa.Letan
                     if (string.IsNullOrWhiteSpace(col.DataPropertyName)) col.DataPropertyName = col.Name;
                 }
                 dgvDSBN.DataSource = dt;
+                // Select first row if available
+                if (dgvDSBN.Rows.Count > 0)
+                {
+                    dgvDSBN.ClearSelection();
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi khi tải danh sách bệnh nhân: " + ex.Message);
+            }
+        }
+
+        private void DgvDSBN_SelectionChanged(object sender, EventArgs e)
+        {
+            PopulateFieldsFromSelectedRow();
+        }
+
+        private void PopulateFieldsFromSelectedRow()
+        {
+            try
+            {
+                if (dgvDSBN.SelectedRows.Count == 0) return;
+                var row = dgvDSBN.SelectedRows[0];
+                var maBN = row.Cells["MaBN"].Value?.ToString();
+                if (string.IsNullOrEmpty(maBN)) return;
+
+                // Fill patient fields
+                textBox1.Text = maBN;
+                textBox3.Text = row.Cells["TenBN"].Value?.ToString() ?? string.Empty;
+                textBox2.Text = row.Cells["SDT"].Value?.ToString() ?? string.Empty;
+                textBox4.Text = row.Cells["DiaChi"].Value?.ToString() ?? string.Empty;
+                if (int.TryParse(row.Cells["NamSinh"].Value?.ToString(), out int ns))
+                {
+                    dateTimePicker1.Value = new DateTime(Math.Max(1900, ns), 1, 1);
+                }
+                var gt = row.Cells["GioiTinh"].Value?.ToString() ?? "";
+                if (!string.IsNullOrEmpty(gt) && gt.ToLower().StartsWith("n"))
+                {
+                    radioButton2.Checked = true; // Nữ
+                }
+                else
+                {
+                    radioButton1.Checked = true; // Nam
+                }
+
+                // Appointment-specific: load latest appointment for this patient
+                using (var ctx = new NhaKhoaContext())
+                {
+                    var latest = ctx.LamSans.Where(l => l.MaBN == maBN).OrderByDescending(l => l.NgayKham).FirstOrDefault();
+                    if (latest != null)
+                    {
+                        dateTimePicker2.Value = latest.NgayKham ?? DateTime.Now;
+                        // set doctor selection if present
+                        try
+                        {
+                            cboBacSi.SelectedValue = latest.MaNV;
+                        }
+                        catch { }
+                        if (latest.GioBatDau.HasValue)
+                        {
+                            cboGioBD.SelectedItem = latest.GioBatDau.Value.ToString();
+                        }
+                        if (latest.GioKetThuc.HasValue)
+                        {
+                            cboGioKT.SelectedItem = latest.GioKetThuc.Value.ToString();
+                        }
+                        richTextBox1.Text = latest.TrieuChung ?? string.Empty;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // don't break selection on minor errors
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void Button2_EditAppointment_Click(object sender, EventArgs e)
+        {
+            // Edit the latest appointment for selected patient
+            if (dgvDSBN.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Vui lòng chọn bệnh nhân để sửa lịch hẹn.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            var maBN = dgvDSBN.SelectedRows[0].Cells["MaBN"].Value?.ToString();
+            if (string.IsNullOrEmpty(maBN)) return;
+
+            try
+            {
+                using (var ctx = new NhaKhoaContext())
+                {
+                    var latest = ctx.LamSans.Where(l => l.MaBN == maBN).OrderByDescending(l => l.NgayKham).FirstOrDefault();
+                    if (latest == null)
+                    {
+                        MessageBox.Show("Không tìm thấy lịch hẹn để sửa.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    // Update fields from UI
+                    latest.NgayKham = dateTimePicker2.Value.Date;
+                    if (TimeSpan.TryParse(cboGioBD.SelectedItem?.ToString(), out var bd)) latest.GioBatDau = bd;
+                    if (TimeSpan.TryParse(cboGioKT.SelectedItem?.ToString(), out var kt)) latest.GioKetThuc = kt;
+                    if (cboBacSi.SelectedValue != null) latest.MaNV = cboBacSi.SelectedValue.ToString();
+                    latest.TrieuChung = richTextBox1.Text;
+
+                    // Update patient info
+                    var bn = ctx.BenhNhans.SingleOrDefault(b => b.MaBN == maBN);
+                    if (bn != null)
+                    {
+                        bn.TenBN = textBox3.Text;
+                        bn.SDT = textBox2.Text;
+                        bn.DiaChi = textBox4.Text;
+                        bn.NamSinh = dateTimePicker1.Value.Year;
+                        bn.GioiTinh = radioButton2.Checked ? "Nu" : "Nam";
+                        bn.LyDoKham = richTextBox1.Text;
+                    }
+
+                    ctx.SaveChanges();
+                }
+
+                MessageBox.Show("Sửa lịch hẹn thành công.", "Hoàn tất", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadDanhSachBenhNhan();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi sửa lịch hẹn: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void Button3_DeleteAppointment_Click(object sender, EventArgs e)
+        {
+            // Delete latest appointment for selected patient after confirmation
+            if (dgvDSBN.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Vui lòng chọn bệnh nhân để xoá lịch hẹn.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            var maBN = dgvDSBN.SelectedRows[0].Cells["MaBN"].Value?.ToString();
+            if (string.IsNullOrEmpty(maBN)) return;
+
+            if (MessageBox.Show("Bạn có chắc muốn xoá lịch hẹn mới nhất của bệnh nhân này?","Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                return;
+
+            try
+            {
+                using (var ctx = new NhaKhoaContext())
+                {
+                    var latest = ctx.LamSans.Where(l => l.MaBN == maBN).OrderByDescending(l => l.NgayKham).FirstOrDefault();
+                    if (latest == null)
+                    {
+                        MessageBox.Show("Không tìm thấy lịch hẹn để xoá.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    ctx.LamSans.Remove(latest);
+                    ctx.SaveChanges();
+                }
+
+                MessageBox.Show("Xoá lịch hẹn thành công.", "Hoàn tất", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadDanhSachBenhNhan();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi xoá lịch hẹn: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

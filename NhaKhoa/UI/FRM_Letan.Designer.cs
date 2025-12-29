@@ -448,7 +448,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(173, 37);
             this.button2.TabIndex = 11;
-            this.button2.Text = "Thêm mới hoá đơn";
+            this.button2.Text = "Sửa lịch hẹn";
             this.button2.UseVisualStyleBackColor = true;
             // 
             // button3
@@ -458,7 +458,7 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(189, 37);
             this.button3.TabIndex = 12;
-            this.button3.Text = "Thêm mới chi tiết hoá đơn";
+            this.button3.Text = "Xóa lịch hẹn";
             this.button3.UseVisualStyleBackColor = true;
             // 
             // button4

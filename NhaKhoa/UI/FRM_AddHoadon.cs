@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Globalization;
 using NhaKhoa.BUS;
+using NhaKhoa.UI;
 using NhaKhoa.DAL.Models;
 
 namespace NhaKhoa.Hoadon
@@ -371,38 +372,22 @@ namespace NhaKhoa.Hoadon
 
         private void btnIn_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(maHoaDon))
+            if (string.IsNullOrEmpty(maBenhNhanHienTai))
             {
-                MessageBox.Show("Chưa có hoá đơn để in!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Chưa chọn bệnh nhân để in!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // Hiển thị thông tin hoá đơn để in (giả lập)
-            string invoiceInfo = $"HOÁ ĐƠN\n" +
-                                 $"Mã hoá đơn: {maHoaDon}\n" +
-                                 $"Ngày lập: {dtpNgayLap.Value:dd/MM/yyyy}\n" +
-                                 $"Bệnh nhân: {txtTenBenhNhan.Text} ({txtNgaySinh.Text})\n" +
-                                 $"Bác sĩ: {txtTenNhanVien.Text} - {txtChucVu.Text}\n" +
-                                 $"----------------------------------------\n";
-
-            foreach (DataGridViewRow row in dgvLamSan.Rows)
+            try
             {
-                if (row.IsNewRow) continue;
-                var maLS = row.Cells["ls_MaLS"].Value?.ToString() ?? "";
-                var tenCD = row.Cells["ls_TenCD"].Value?.ToString() ?? "";
-                var tenDT = row.Cells["ls_TenDT"].Value?.ToString() ?? "";
-                var thanh = row.Cells["ls_ThanhTien"].Value?.ToString() ?? "0";
-                invoiceInfo += $"{maLS} | {tenCD} | {tenDT} = {thanh}\n";
+                using (var frm = new FormInHoaDonLamSan(maBenhNhanHienTai))
+                {
+                    frm.ShowDialog(this);
+                }
             }
-
-            invoiceInfo += $"----------------------------------------\n" +
-                           $"Tổng tiền: {txtThanhTien.Text}";
-
-            // Mở hộp thoại in (giả lập)
-            PrintDialog printDialog = new PrintDialog();
-            if (printDialog.ShowDialog() == DialogResult.OK)
+            catch (Exception ex)
             {
-                MessageBox.Show("Đã gửi lệnh in thành công!", "In hoá đơn", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Lỗi khi mở báo cáo: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
