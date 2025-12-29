@@ -19,10 +19,7 @@ namespace NhaKhoa.BUS
             return _dal.GetAll();
         }
 
-        public List<TaiKhoan> LayDanhSachTaiKhoan()
-        {
-            return _dal.GetAllTaiKhoan();
-        }
+        // LayDanhSachTaiKhoan removed; use LayDanhSach() which returns Users and assemble role strings in UI.
 
         public Users LayUserTheoId(int id)
         {

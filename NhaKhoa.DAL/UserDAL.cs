@@ -53,40 +53,7 @@ namespace NhaKhoa.DAL
             }
         }
 
-        public List<Models.TaiKhoan> GetAllTaiKhoan()
-        {
-            using (var ctx = new NhaKhoaContext())
-            {
-                // Load về memory trước để có thể dùng string.Join
-                var users = ctx.Users
-                              .Include(x => x.UserRoles.Select(ur => ur.Role))
-                              .Where(x => x.IsActive)
-                              .ToList();
-
-                var result = new List<Models.TaiKhoan>();
-
-                foreach (var u in users)
-                {
-                    var roles = u.UserRoles?
-                                 .Select(ur => ur.Role?.Name)
-                                 .Where(r => !string.IsNullOrEmpty(r))
-                                 .ToList() ?? new List<string>();
-
-                    result.Add(new Models.TaiKhoan
-                    {
-                        Id = u.Id,
-                        Username = u.Username,
-                        FullName = u.FullName,
-                        Email = u.Email,
-                        IsActive = u.IsActive,
-                        Status = u.IsActive ? "Hoạt động" : "Không hoạt động",
-                        Roles = string.Join(", ", roles)
-                    });
-                }
-
-                return result;
-            }
-        }
+        // GetAllTaiKhoan removed; use GetAll() and UserRoleBUS to assemble role strings in UI/BUS layer.
 
         public void Insert(Models.Users user)
         {

@@ -59,7 +59,7 @@ namespace NhaKhoa.TaiKhoan
         {
             try
             {
-                var list = _userBus.LayDanhSachTaiKhoan();
+                var users = _userBus.LayDanhSach();
                 var dt = new DataTable();
                 dt.Columns.Add("Id", typeof(int));
                 dt.Columns.Add("Username", typeof(string));
@@ -68,9 +68,31 @@ namespace NhaKhoa.TaiKhoan
                 dt.Columns.Add("Status", typeof(string));
                 dt.Columns.Add("Roles", typeof(string));
 
-                foreach (var tk in list)
+                // Build role id -> name map to avoid repeated DB calls
+                var allRoles = _roleBus.LayDanhSach();
+                var roleMap = new Dictionary<int, string>();
+                foreach (var r in allRoles)
+                    roleMap[r.Id] = r.Name;
+
+                foreach (var user in users)
                 {
-                    dt.Rows.Add(tk.Id, tk.Username, tk.FullName, tk.Email, tk.Status, tk.Roles);
+                    // Get user roles
+                    var urs = _userRoleBus.LayUserRolesTheoUserId(user.Id);
+                    string rolesStr = "";
+                    if (urs != null && urs.Count > 0)
+                    {
+                        var names = new List<string>();
+                        foreach (var ur in urs)
+                        {
+                            if (roleMap.TryGetValue(ur.RoleId, out var rn))
+                                names.Add(rn);
+                        }
+                        rolesStr = string.Join(", ", names);
+                    }
+
+                    string status = user.IsActive ? "Hoạt động" : "Khóa";
+
+                    dt.Rows.Add(user.Id, user.Username, user.FullName, user.Email, status, rolesStr);
                 }
 
                 dgvAccount.DataSource = dt;
